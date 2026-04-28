@@ -11,6 +11,24 @@
         .scout-blue { background-color: #0d47a1; }
         .whatsapp-green { background-color: #25D366; }
         .card-hover:hover { transform: translateY(-8px); transition: 0.4s; }
+        
+        /* Configuración de la Marca de Agua */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Reemplaza 'URL_DE_TU_IMAGEN' con el link directo de tu logo sin fondo */
+            background-image: url('https://img.freepik.com/vector-premium/brujula-red-digital-scout-logo-transparente_placeholder.png'); 
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 60%;
+            opacity: 0.05; /* Ajusta este valor para que sea más o menos visible */
+            z-index: -1;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body class="bg-gray-50 font-sans">
@@ -18,7 +36,7 @@
     <nav class="scout-green text-white p-4 shadow-lg sticky top-0 z-50 border-b-4 border-yellow-500">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl font-bold flex items-center gap-2">
-                <i class="fas fa-map-marked-alt"></i> Red Scout Bajío
+                <i class="fas fa-compass text-yellow-500"></i> Red Scout Bajío
             </h1>
             <div class="hidden md:flex space-x-6 text-sm font-semibold uppercase tracking-wider">
                 <a href="#lugares" class="hover:text-yellow-400">Zonas de Camping</a>
@@ -28,7 +46,7 @@
         </div>
     </nav>
 
-    <header class="bg-white py-16 border-b">
+    <header class="bg-white/80 backdrop-blur-sm py-16 border-b">
         <div class="container mx-auto text-center px-4">
             <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4 uppercase italic">Zonas de Camping</h2>
             <p class="text-gray-600 max-w-2xl mx-auto">Explora lugares de acampada verificados, manuales técnicos y recursos compartidos por la comunidad scout.</p>
@@ -54,7 +72,7 @@
                         <span><i class="fas fa-snowflake"></i> FRÍO</span>
                         <span><i class="fas fa-tree"></i> BOSQUE</span>
                     </div>
-                    <a href="https://maps.app.goo.gl/Wiq9muRebM9b92SR7" target="_blank" class="mt-6 block text-center scout-blue text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition shadow-lg shadow-blue-200">Ver Ubicación</a>
+                    <a href="https://maps.google.com" target="_blank" class="mt-6 block text-center scout-blue text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition shadow-lg shadow-blue-200">Ver Ubicación</a>
                 </div>
             </div>
 
@@ -70,7 +88,7 @@
                         <span><i class="fas fa-history"></i> HISTORIA</span>
                         <span><i class="fas fa-mountain"></i> CAÑÓN</span>
                     </div>
-                    <a href="https://maps.app.goo.gl/3S9RosfFeF7wZ52S9" target="_blank" class="mt-6 block text-center scout-blue text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition shadow-lg shadow-blue-200">Ver Ubicación</a>
+                    <a href="https://maps.google.com" target="_blank" class="mt-6 block text-center scout-blue text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition shadow-lg shadow-blue-200">Ver Ubicación</a>
                 </div>
             </div>
 
@@ -86,7 +104,7 @@
                         <span><i class="fas fa-hiking"></i> RÁPEL</span>
                         <span><i class="fas fa-sun"></i> SEMIDESIERTO</span>
                     </div>
-                    <a href="https://maps.app.goo.gl/hxawozreyh9SMSceA" target="_blank" class="mt-6 block text-center scout-blue text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition shadow-lg shadow-blue-200">Ver Ubicación</a>
+                    <a href="https://maps.google.com" target="_blank" class="mt-6 block text-center scout-blue text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition shadow-lg shadow-blue-200">Ver Ubicación</a>
                 </div>
             </div>
 
@@ -102,7 +120,7 @@
                         <span><i class="fas fa-campground"></i> AMPLIO</span>
                         <span><i class="fas fa-tree"></i> PINOS</span>
                     </div>
-                    <a href="https://maps.app.goo.gl/422pD9uMp77HDDp97" target="_blank" class="mt-6 block text-center scout-blue text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition shadow-lg shadow-blue-200">Ver Ubicación</a>
+                    <a href="https://maps.google.com" target="_blank" class="mt-6 block text-center scout-blue text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition shadow-lg shadow-blue-200">Ver Ubicación</a>
                 </div>
             </div>
 
@@ -118,7 +136,7 @@
                         <span><i class="fas fa-water"></i> PRESA</span>
                         <span><i class="fas fa-bicycle"></i> PISTA</span>
                     </div>
-                    <a href="https://maps.app.goo.gl/pbAkUuEbMwFgDBVM8" target="_blank" class="mt-6 block text-center scout-blue text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition shadow-lg shadow-blue-200">Ver Ubicación</a>
+                    <a href="https://maps.google.com" target="_blank" class="mt-6 block text-center scout-blue text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition shadow-lg shadow-blue-200">Ver Ubicación</a>
                 </div>
             </div>
 
@@ -134,7 +152,7 @@
                         <span><i class="fas fa-leaf"></i> NATURALEZA</span>
                         <span><i class="fas fa-mountain"></i> ALTURA</span>
                     </div>
-                    <a href="https://maps.app.goo.gl/LZavHrxM1bfmU19n6" target="_blank" class="mt-6 block text-center scout-blue text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition shadow-lg shadow-blue-200">Ver Ubicación</a>
+                    <a href="https://maps.google.com" target="_blank" class="mt-6 block text-center scout-blue text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition shadow-lg shadow-blue-200">Ver Ubicación</a>
                 </div>
             </div>
 
@@ -150,7 +168,7 @@
                         <span><i class="fas fa-tree"></i> PINOS</span>
                         <span><i class="fas fa-cloud-sun"></i> PANORAMA</span>
                     </div>
-                    <a href="https://maps.app.goo.gl/CLD1ZHFR3nLkTuqf9" target="_blank" class="mt-6 block text-center scout-blue text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition shadow-lg shadow-blue-200">Ver Ubicación</a>
+                    <a href="https://maps.google.com" target="_blank" class="mt-6 block text-center scout-blue text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition shadow-lg shadow-blue-200">Ver Ubicación</a>
                 </div>
             </div>
 
@@ -166,7 +184,7 @@
                         <span><i class="fas fa-snowflake"></i> MUY FRÍO</span>
                         <span><i class="fas fa-compass"></i> TÉCNICA</span>
                     </div>
-                    <a href="https://maps.app.goo.gl/MAfxiJUS1aUumXLz9" target="_blank" class="mt-6 block text-center scout-blue text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition shadow-lg shadow-blue-200">Ver Ubicación</a>
+                    <a href="https://maps.google.com" target="_blank" class="mt-6 block text-center scout-blue text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition shadow-lg shadow-blue-200">Ver Ubicación</a>
                 </div>
             </div>
 
@@ -182,19 +200,19 @@
                         <span><i class="fas fa-shield-alt"></i> SEGURO</span>
                         <span><i class="fas fa-campground"></i> AMPLIO</span>
                     </div>
-                    <a href="https://maps.app.goo.gl/qYyWr82kyAMkUj1D9" target="_blank" class="mt-6 block text-center scout-blue text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition shadow-lg shadow-blue-200">Ver Ubicación</a>
+                    <a href="https://maps.google.com" target="_blank" class="mt-6 block text-center scout-blue text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition shadow-lg shadow-blue-200">Ver Ubicación</a>
                 </div>
             </div>
 
         </div>
     </section>
 
-    <section id="biblioteca" class="bg-slate-900 py-16 text-white">
+    <section id="biblioteca" class="bg-slate-900/90 py-16 text-white">
         <div class="container mx-auto px-4">
             <h3 class="text-2xl font-bold mb-10 border-l-8 border-blue-500 pl-4 uppercase tracking-widest">Biblioteca de Recursos</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 
-                <a href="https://drive.google.com/file/d/1WShon2OCkrTYr5lya1oic736Ojs3uhfi/view?usp=sharing" target="_blank" class="bg-slate-800 p-6 rounded-2xl border border-slate-700 flex items-start gap-4 hover:bg-slate-700 transition">
+                <a href="#" target="_blank" class="bg-slate-800 p-6 rounded-2xl border border-slate-700 flex items-start gap-4 hover:bg-slate-700 transition">
                     <i class="fas fa-book text-blue-400 text-3xl"></i>
                     <div>
                         <h5 class="font-bold">Manuales de Nudos</h5>
@@ -202,7 +220,7 @@
                     </div>
                 </a>
 
-                <a href="https://drive.google.com/drive/folders/1LA5rhzvKXHwyckqakuojT4gVe-qTceNx?usp=sharing" target="_blank" class="bg-slate-800 p-6 rounded-2xl border border-slate-700 flex items-start gap-4 hover:bg-slate-700 transition">
+                <a href="#" target="_blank" class="bg-slate-800 p-6 rounded-2xl border border-slate-700 flex items-start gap-4 hover:bg-slate-700 transition">
                     <i class="fas fa-utensils text-green-400 text-3xl"></i>
                     <div>
                         <h5 class="font-bold">Recetario de Patrulla</h5>
@@ -210,7 +228,7 @@
                     </div>
                 </a>
 
-                <a href="https://drive.google.com/drive/folders/1GT6PBA3k0CyMMBERJi2zUTF5pcv9Yfw9?usp=sharing" target="_blank" class="bg-slate-800 p-6 rounded-2xl border border-slate-700 flex items-start gap-4 hover:bg-slate-700 transition">
+                <a href="#" target="_blank" class="bg-slate-800 p-6 rounded-2xl border border-slate-700 flex items-start gap-4 hover:bg-slate-700 transition">
                     <i class="fas fa-shield-alt text-red-400 text-3xl"></i>
                     <div>
                         <h5 class="font-bold">Seguridad Scout</h5>
@@ -218,33 +236,17 @@
                     </div>
                 </a>
 
-                <a href="https://drive.google.com/drive/folders/1n0DDVah8YlhRtla0p6cXLZKl1Nved_sz?usp=sharing" target="_blank" class="bg-slate-800 p-6 rounded-2xl border border-slate-700 flex items-start gap-4 hover:bg-slate-700 transition">
-                    <i class="fas fa-compass text-yellow-400 text-3xl"></i>
-                    <div>
-                        <h5 class="font-bold">Manuales de Técnica Scout</h5>
-                        <p class="text-xs text-slate-400 mt-1">Orientación, pionerismo y más</p>
-                    </div>
-                </a>
-
-                <a href="https://drive.google.com/drive/folders/1Oyb-WQnaNyPFaZERi4xU_eeNmbqXE6rp?usp=sharing" target="_blank" class="bg-slate-800 p-6 rounded-2xl border border-slate-700 flex items-start gap-4 hover:bg-slate-700 transition">
-                    <i class="fas fa-fleur-de-lis text-purple-400 text-3xl"></i>
-                    <div>
-                        <h5 class="font-bold">Ceremonias y Mística</h5>
-                        <p class="text-xs text-slate-400 mt-1">Tradiciones y espiritualidad</p>
-                    </div>
-                </a>
-
             </div>
         </div>
     </section>
 
-    <section id="contacto" class="bg-white py-16">
+    <section id="contacto" class="bg-white/90 py-16">
         <div class="container mx-auto px-4 text-center">
             <h3 class="text-2xl font-bold text-gray-800 mb-6">¿Conoces un lugar increíble?</h3>
             <p class="text-gray-600 mb-8 max-w-xl mx-auto">Ayúdanos a crecer nuestra base de datos. Mándanos la ubicación y detalles para agregarlos a la red.</p>
             
             <div class="flex flex-col md:flex-row justify-center items-center gap-6">
-                <a href="https://wa.me/524621419906?text=Hola,%20quisiera%20sugerir%20un%20nuevo%20lugar%20para%20la%20Red%20Scout%20Bajío" target="_blank" class="whatsapp-green text-white px-8 py-4 rounded-full font-bold flex items-center gap-3 shadow-lg hover:scale-105 transition transform">
+                <a href="https://wa.me/524621419906" target="_blank" class="whatsapp-green text-white px-8 py-4 rounded-full font-bold flex items-center gap-3 shadow-lg hover:scale-105 transition transform">
                     <i class="fab fa-whatsapp text-2xl"></i> Mandar nuevo lugar
                 </a>
                 
@@ -256,7 +258,7 @@
         </div>
     </section>
 
-    <footer class="bg-gray-50 py-10 text-center border-t">
+    <footer class="bg-gray-50/80 py-10 text-center border-t">
         <p class="text-gray-400 text-xs font-bold uppercase tracking-widest">Proyecto de | Jonathan Alexander</p>
     </footer>
 
