@@ -44,6 +44,16 @@
         <div class="flex items-center justify-between mb-10">
             <h3 class="text-2xl font-bold text-gray-800 border-l-8 border-yellow-500 pl-4">📍 Explorar Destinos</h3>
         </div>
+        <!-- Barra de Búsqueda -->
+<div class="mb-8 max-w-md">
+    <div class="relative">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
+            <i class="fas fa-search"></i>
+        </span>
+        <input type="text" id="buscador" placeholder="Buscar por nombre o municipio (ej. Santa Rosa, Irapuato)..." 
+               class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent shadow-sm text-sm transition">
+    </div>
+</div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             
@@ -319,6 +329,28 @@
     <footer class="bg-gray-50 py-10 text-center border-t">
         <p class="text-gray-400 text-xs font-bold uppercase tracking-widest">Clan Centzon Huitznahuac | Proyecto de | Jonathan Alexander</p>
     </footer>
-
+    <script>
+    document.getElementById('buscador').addEventListener('input', function(e) {
+        // Convertimos lo que escribe el usuario a minúsculas y quitamos espacios de más
+        const terminoBusqueda = e.target.value.toLowerCase().trim();
+        
+        // Seleccionamos todas las tarjetas dentro de la cuadrícula de lugares
+        const tarjetas = document.querySelectorAll('#lugares .grid > div');
+        
+        tarjetas.forEach(tarjeta => {
+            // Obtenemos el texto del municipio (span) y del nombre (h4)
+            const municipio = tarjeta.querySelector('span').textContent.toLowerCase();
+            const nombre = tarjeta.querySelector('h4').textContent.toLowerCase();
+            
+            // Si el término de búsqueda coincide con el nombre o el municipio, mostramos la tarjeta; si no, la ocultamos
+            if (nombre.includes(terminoBusqueda) || municipio.includes(terminoBusqueda)) {
+                tarjeta.classList.remove('hidden');
+            } else {
+                tarjeta.classList.add('hidden');
+            }
+        });
+    });
+    </script>
+    
 </body>
 </html>
