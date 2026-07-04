@@ -48,19 +48,33 @@ body{
 <body class="bg-gray-50 font-sans">
 
     <nav class="scout-green text-white p-4 shadow-lg sticky top-0 z-50 border-b-4 border-yellow-500">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold flex items-center gap-2">
-    <img src="IMG_20260704_041147.png" alt="Logo Red Scout Bajío" class="w-9 h-9 object-contain rounded-full bg-white p-0.5"> 
-                Red Scout Bajío
-</h1>
+    <div class="container mx-auto flex justify-between items-center">
+        <!-- Logo -->
+        <h1 class="text-xl font-bold flex items-center gap-2">
+            <img src="IMG_20260704_041147.png" alt="Logo Red Scout Bajío" class="w-9 h-9 object-contain rounded-full bg-white p-0.5"> 
+            Red Scout Bajío
+        </h1>
 
-            <div class="hidden md:flex space-x-6 text-sm font-semibold uppercase tracking-wider">
-                <a href="#lugares" class="hover:text-yellow-400">Zonas de Camping y Hiking</a>
-                <a href="#biblioteca" class="hover:text-yellow-400">Biblioteca</a>
-                <a href="#contacto" class="bg-yellow-500 text-green-900 px-4 py-1 rounded-full hover:bg-yellow-400 transition">Colaborar</a>
-            </div>
+        <!-- Menú Desktop (se oculta en celular) -->
+        <div class="hidden md:flex space-x-6 text-sm font-semibold uppercase tracking-wider">
+            <a href="#lugares" class="hover:text-yellow-400">Zonas de Camping y Hiking</a>
+            <a href="#biblioteca" class="hover:text-yellow-400">Biblioteca</a>
+            <a href="#contacto" class="bg-yellow-500 text-green-900 px-4 py-1 rounded-full hover:bg-yellow-400 transition">Colaborar</a>
         </div>
-    </nav>
+
+        <!-- Botón Hamburguesa (solo visible en celular) -->
+        <button id="menu-btn" class="md:hidden text-white text-2xl focus:outline-none">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- Menú Desplegable Móvil -->
+    <div id="mobile-menu" class="hidden md:hidden scout-green w-full border-t border-green-800 p-4 flex flex-col items-center space-y-4 uppercase text-sm font-semibold">
+        <a href="#lugares" class="hover:text-yellow-400">Zonas de Camping y Hiking</a>
+        <a href="#biblioteca" class="hover:text-yellow-400">Biblioteca</a>
+        <a href="#contacto" class="bg-yellow-500 text-green-900 px-6 py-2 rounded-full hover:bg-yellow-400 transition">Colaborar</a>
+    </div>
+</nav>
 
     <header class="bg-white py-16 border-b">
         <div class="container mx-auto text-center px-4">
@@ -598,6 +612,14 @@ body{
                 tarjeta.classList.add('hidden');
             }
         });
+    });
+    </script>
+    <script>
+    const btn = document.getElementById('menu-btn');
+    const menu = document.getElementById('mobile-menu');
+
+    btn.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
     });
     </script>
     
