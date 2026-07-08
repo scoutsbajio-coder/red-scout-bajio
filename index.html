@@ -112,10 +112,15 @@ body{
 
    <header class="relative h-[380px] md:h-[450px] border-b overflow-hidden">
 
-    <!-- Imagen de fondo -->
-    <img src="banner_optimizado.webp"
+    <!-- Imagen para computadora -->
+<img src="banner_optimizado.webp"
      alt="Banner Red Scout Bajío"
-     class="banner-img absolute inset-0 w-full h-full object-cover scale-105">
+     class="banner-img absolute inset-0 w-full h-full object-cover scale-105 hidden md:block">
+
+<!-- Imagen para celular -->
+<img src="banner_movil.webp"
+     alt="Banner Red Scout Bajío"
+     class="banner-img absolute inset-0 w-full h-full object-cover block md:hidden">
 
     <!-- Capa oscura -->
     <div class="absolute inset-0 bg-black/50"></div>
