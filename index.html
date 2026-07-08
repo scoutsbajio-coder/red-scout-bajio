@@ -43,6 +43,40 @@ body{
     transform:translateY(-8px);
     box-shadow:0 18px 35px rgba(0,0,0,.15);
 }
+        /* ===========================
+   Animaciones del Banner
+=========================== */
+
+@keyframes fadeZoom {
+    from {
+        opacity: 0;
+        transform: scale(1.08);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+}
+
+.banner-img {
+    animation: fadeZoom 1.5s ease-out forwards;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.banner-text {
+    animation: fadeUp 1.2s ease-out 0.4s forwards;
+    opacity: 0;
+}
     </style>
 </head>
 <body class="bg-gray-50 font-sans">
@@ -80,14 +114,14 @@ body{
 
     <!-- Imagen de fondo -->
     <img src="banner_optimizado.webp"
-         alt="Banner Red Scout Bajío"
-         class="absolute inset-0 w-full h-full object-cover scale-105">
+     alt="Banner Red Scout Bajío"
+     class="banner-img absolute inset-0 w-full h-full object-cover scale-105">
 
     <!-- Capa oscura -->
     <div class="absolute inset-0 bg-black/50"></div>
 
     <!-- Contenido -->
-    <div class="relative z-10 container mx-auto h-full flex flex-col justify-center items-center text-center px-4">
+    <div class="banner-text relative z-10 container mx-auto h-full flex flex-col justify-center items-center text-center px-4">
 
         <h2 class="text-4xl md:text-6xl font-black uppercase italic text-white mb-4 drop-shadow-lg">
             Zonas de Camping y Hiking
