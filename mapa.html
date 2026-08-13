@@ -81,58 +81,102 @@
         }
 
 
-        /* =====================================================
-           BOTONES DE ZOOM
-        ===================================================== */
+       /* =====================================================
+   CONTROLES DE LEAFLET
+===================================================== */
 
-        .leaflet-control-zoom {
-
-            position: relative !important;
-
-            top: auto !important;
-            right: auto !important;
-            bottom: auto !important;
-            left: auto !important;
-
-            margin: 0 !important;
-
-        }
+/* Contenedor general de controles */
+.leaflet-top,
+.leaflet-bottom {
+    z-index: 900 !important;
+}
 
 
-        .leaflet-control-zoom a {
+/* =====================================================
+   COMPUTADORA
+   ===================================================== */
 
-            width: 44px !important;
-            height: 44px !important;
-
-            line-height: 44px !important;
-
-            font-size: 23px !important;
-
-        }
+/* Zoom arriba a la derecha */
+.leaflet-control-zoom {
+    margin-top: 10px !important;
+    margin-right: 10px !important;
+}
 
 
-        /* =====================================================
-           CONTROL DE CAPAS
-        ===================================================== */
+/* Capas arriba a la derecha */
+.leaflet-control-layers {
+    margin-top: 10px !important;
+    margin-right: 10px !important;
 
-        .leaflet-control-layers {
+    border-radius: 10px !important;
 
-            position: relative !important;
+    box-shadow:
+        0 3px 12px rgba(0,0,0,.25) !important;
+}
 
-            top: auto !important;
-            right: auto !important;
-            bottom: auto !important;
-            left: auto !important;
 
-            margin: 0 0 10px 0 !important;
+/* =====================================================
+   CELULAR
+   ===================================================== */
 
-            border-radius: 10px !important;
+@media (max-width: 640px) {
 
-            box-shadow:
-                0 3px 12px rgba(0,0,0,.25) !important;
+    /* -----------------------------
+       ZOOM
+    ----------------------------- */
 
-        }
+    .leaflet-control-zoom {
 
+        position: fixed !important;
+
+        right: 12px !important;
+        bottom: 78px !important;
+
+        left: auto !important;
+        top: auto !important;
+
+        margin: 0 !important;
+
+        z-index: 950 !important;
+    }
+
+
+    .leaflet-control-zoom a {
+
+        width: 46px !important;
+        height: 46px !important;
+
+        line-height: 46px !important;
+
+        font-size: 24px !important;
+    }
+
+
+    /* -----------------------------
+       CAPAS
+    ----------------------------- */
+
+    .leaflet-control-layers {
+
+        position: fixed !important;
+
+        right: 12px !important;
+        bottom: 178px !important;
+
+        left: auto !important;
+        top: auto !important;
+
+        margin: 0 !important;
+
+        z-index: 950 !important;
+
+        border-radius: 10px !important;
+
+        box-shadow:
+            0 3px 12px rgba(0,0,0,.25) !important;
+    }
+
+            }
 
         /* =====================================================
            MARCADORES
