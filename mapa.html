@@ -94,20 +94,32 @@
         }
 
 
-        /* =====================================================
-           CONTROL DE CAPAS
-        ===================================================== */
+       /* =====================================================
+   CONTROL DE CAPAS
+===================================================== */
 
-        .leaflet-control-layers {
+.leaflet-control-layers {
 
-            border-radius: 10px !important;
+    position: fixed !important;
 
-            box-shadow:
-                0 3px 12px rgba(0,0,0,.25) !important;
+    right: 12px !important;
+    bottom: 175px !important;
 
-        }
+    top: auto !important;
+    left: auto !important;
 
+    border-radius: 10px !important;
 
+    box-shadow:
+        0 3px 12px rgba(0,0,0,.25) !important;
+
+    margin: 0 !important;
+
+    z-index: 1000 !important;
+
+}
+
+        
         /* =====================================================
            MARCADORES
         ===================================================== */
@@ -388,12 +400,22 @@
 
             .leaflet-control-zoom {
 
-                right: 12px !important;
+    right: 12px !important;
 
-                bottom: 75px !important;
+    bottom: 75px !important;
 
-            }
+}
 
+
+/* Capas arriba del zoom */
+
+.leaflet-control-layers {
+
+    right: 12px !important;
+
+    bottom: 175px !important;
+
+}
 
             .leaflet-control-zoom a {
 
