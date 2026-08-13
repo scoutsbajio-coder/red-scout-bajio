@@ -7,20 +7,34 @@
     <title>Mapa Scout | Red Scout Bajío</title>
 
     <link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="favicon-64.png">
 
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- Font Awesome -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
+    <!-- Leaflet -->
     <link rel="stylesheet"
-          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIINfQ3eM7H6mJ5u2mFJk6tP1a0xJ5k5v3M="
+          crossorigin=""/>
+
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin="">
+    </script>
 
     <style>
 
         body {
             margin: 0;
             background: #F5F5F0;
+            font-family: Arial, sans-serif;
         }
 
         #map {
@@ -28,198 +42,172 @@
             width: 100%;
         }
 
+        /* Controles de zoom */
+.leaflet-control-zoom {
+    position: fixed !important;
+    right: 12px !important;
+    bottom: 70px !important;
+    left: auto !important;
+    top: auto !important;
+    margin: 0 !important;
+}
+
+.leaflet-control-zoom a {
+    width: 44px !important;
+    height: 44px !important;
+    line-height: 44px !important;
+    font-size: 23px !important;
+}
+
+/* Control de capas */
+.leaflet-control-layers {
+    border-radius: 10px !important;
+    box-shadow: 0 3px 12px rgba(0,0,0,.25) !important;
+}
+
         .scout-green {
             background-color: #1B4332;
         }
 
-        .leaflet-popup-content-wrapper {
-            border-radius: 14px;
+        /* Marcadores */
+
+        .custom-marker {
+            background-color: #1B4332;
+            width: 38px;
+            height: 38px;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid white;
+            box-shadow: 0 3px 8px rgba(0,0,0,.35);
         }
 
-        .leaflet-popup-content {
-            margin: 16px;
-            min-width: 230px;
+        .custom-marker i {
+            color: white;
+            font-size: 16px;
+            transform: rotate(45deg);
         }
+
+        /* Popup */
 
         .popup-title {
-            font-size: 18px;
             font-weight: 800;
-            color: #1f2937;
-            margin-bottom: 5px;
+            font-size: 16px;
+            color: #1B4332;
+            margin-bottom: 4px;
         }
 
-        .popup-location {
-            font-size: 13px;
-            color: #6b7280;
-            margin-bottom: 10px;
+        .popup-municipio {
+            font-size: 11px;
+            font-weight: bold;
+            color: #2563eb;
+            text-transform: uppercase;
+            margin-bottom: 7px;
         }
 
-        .popup-description {
-            font-size: 13px;
-            color: #4b5563;
-            line-height: 1.5;
-            margin-bottom: 10px;
-        }
-
-        .popup-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-top: 8px;
-        }
-
-        .popup-tag {
-            background: #dcfce7;
-            color: #166534;
-            padding: 4px 7px;
-            border-radius: 6px;
-            font-size: 10px;
-            font-weight: 700;
-        }
-
-        .popup-button {
+        .popup-link {
             display: block;
+            margin-top: 10px;
             background: #1D4ED8;
             color: white !important;
+            padding: 8px 10px;
+            border-radius: 8px;
             text-align: center;
-            padding: 10px 12px;
-            border-radius: 9px;
-            font-size: 12px;
-            font-weight: 700;
             text-decoration: none;
-            margin-top: 12px;
-        }
-
-        .popup-button:hover {
-            background: #1e40af;
+            font-weight: bold;
         }
 
         /* Buscador */
 
-        .map-controls {
+        .search-container {
             position: absolute;
             top: 88px;
-            left: 15px;
+            left: 50%;
+            transform: translateX(-50%);
             z-index: 1000;
-            width: min(360px, calc(100% - 30px));
+            width: min(92%, 420px);
         }
 
         .search-box {
+            position: relative;
             background: white;
             border-radius: 14px;
-            padding: 10px;
-            box-shadow: 0 5px 20px rgba(0,0,0,.18);
+            box-shadow: 0 5px 18px rgba(0,0,0,.20);
+            overflow: hidden;
         }
 
-        .search-wrapper {
-            position: relative;
-        }
-
-        .search-wrapper i {
+        .search-icon {
             position: absolute;
-            left: 13px;
+            left: 14px;
             top: 50%;
             transform: translateY(-50%);
             color: #9ca3af;
+            pointer-events: none;
         }
 
-        #mapSearch {
+        #buscador {
             width: 100%;
-            padding: 11px 40px 11px 38px;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
+            border: none;
             outline: none;
+            padding: 14px 45px 14px 42px;
             font-size: 14px;
         }
 
-        #mapSearch:focus {
-            border-color: #1B4332;
-            box-shadow: 0 0 0 2px rgba(27,67,50,.15);
-        }
-
-        #clearSearch {
+        #clear-search {
             position: absolute;
             right: 10px;
             top: 50%;
             transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
             border: none;
-            background: none;
-            color: #9ca3af;
+            background: #e5e7eb;
+            color: #4b5563;
             cursor: pointer;
             display: none;
+            align-items: center;
+            justify-content: center;
         }
 
-        .results {
-            margin-top: 8px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0,0,0,.15);
-            max-height: 260px;
-            overflow-y: auto;
+        #clear-search:hover {
+            background: #d1d5db;
         }
 
-        .result-item {
-            padding: 11px 13px;
-            border-bottom: 1px solid #f3f4f6;
-            cursor: pointer;
-        }
+        /* Información inferior */
 
-        .result-item:last-child {
-            border-bottom: none;
-        }
-
-        .result-item:hover {
-            background: #f0fdf4;
-        }
-
-        .result-name {
-            font-size: 13px;
-            font-weight: 700;
-            color: #1f2937;
-        }
-
-        .result-location {
-            font-size: 11px;
-            color: #6b7280;
-            margin-top: 2px;
-        }
-
-        .no-results {
-            padding: 14px;
-            text-align: center;
-            color: #6b7280;
-            font-size: 13px;
-        }
-
-        /* Botón mostrar todos */
-
-        .show-all {
-            margin-top: 8px;
-            width: 100%;
-            border: none;
-            background: #1B4332;
+        .map-info {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: rgba(27,67,50,.95);
             color: white;
-            padding: 10px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .show-all:hover {
-            background: #143d2d;
+            padding: 9px 16px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0,0,0,.25);
+            white-space: nowrap;
         }
 
         @media (max-width: 640px) {
 
-            .map-controls {
-                top: 84px;
-                left: 10px;
-                width: calc(100% - 20px);
+            #map {
+                height: calc(100vh - 64px);
             }
 
-            .leaflet-popup-content {
-                min-width: 200px;
+            .search-container {
+                top: 76px;
+            }
+
+            .map-info {
+                bottom: 15px;
+                font-size: 11px;
+                padding: 8px 13px;
             }
 
         }
@@ -229,614 +217,600 @@
 
 <body>
 
-    <!-- ==========================================
-         BARRA SUPERIOR
-    =========================================== -->
+    <!-- Barra superior -->
 
-    <nav class="scout-green text-white h-[72px] px-4 shadow-lg flex items-center justify-between">
+    <nav class="scout-green text-white h-[72px] flex items-center shadow-lg relative z-[1100]">
 
-        <div class="flex items-center gap-3">
+        <div class="container mx-auto px-4 flex items-center justify-between">
 
-            <img src="favicon-64.png"
-                 alt="Logo Red Scout Bajío"
-                 class="w-10 h-10 object-contain rounded-full bg-white p-0.5">
+            <div class="flex items-center gap-3">
 
-            <div>
-                <h1 class="font-bold text-lg leading-tight">
-                    Mapa Scout
-                </h1>
+                <img
+                    src="favicon-64.png"
+                    alt="Red Scout Bajío"
+                    class="w-10 h-10 object-contain rounded-full bg-white p-0.5">
 
-                <p class="text-xs text-green-200">
-                    Red Scout Bajío
-                </p>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">
+                        Mapa Scout
+                    </h1>
+
+                    <p class="text-xs text-green-200">
+                        Red Scout Bajío
+                    </p>
+                </div>
+
             </div>
 
+            <a
+                href="index.html"
+                class="bg-yellow-500 text-green-900 px-4 py-2 rounded-full font-bold text-sm hover:bg-yellow-400 transition">
+
+                <i class="fas fa-home mr-1"></i>
+                Inicio
+
+            </a>
+
         </div>
-
-        <a href="index.html"
-           class="bg-yellow-500 text-green-900 px-4 py-2 rounded-full font-bold text-sm hover:bg-yellow-400 transition">
-
-            <i class="fas fa-arrow-left mr-1"></i>
-            Volver
-
-        </a>
 
     </nav>
 
 
-    <!-- ==========================================
-         CONTROLES DEL MAPA
-    =========================================== -->
+    <!-- Buscador -->
 
-    <div class="map-controls">
+    <div class="search-container">
 
         <div class="search-box">
 
-            <div class="search-wrapper">
+            <i class="fas fa-search search-icon"></i>
 
-                <i class="fas fa-search"></i>
+            <input
+                type="text"
+                id="buscador"
+                placeholder="Buscar lugar o municipio..."
+                autocomplete="off">
 
-                <input
-                    type="text"
-                    id="mapSearch"
-                    placeholder="Buscar un lugar..."
-                    autocomplete="off">
+            <button
+                id="clear-search"
+                type="button"
+                aria-label="Limpiar búsqueda">
 
-                <button id="clearSearch">
-                    <i class="fas fa-times"></i>
-                </button>
+                <i class="fas fa-times"></i>
 
-            </div>
+            </button>
 
         </div>
-
-        <div id="results" class="results hidden"></div>
-
-        <button id="showAll" class="show-all">
-
-            <i class="fas fa-map-marked-alt mr-1"></i>
-            Mostrar todos los lugares
-
-        </button>
 
     </div>
 
 
-    <!-- ==========================================
-         MAPA
-    =========================================== -->
+    <!-- Mapa -->
 
     <div id="map"></div>
 
 
-    <!-- ==========================================
-         LEAFLET
-    =========================================== -->
+    <!-- Información -->
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-
-    <script>
-
-        // =====================================================
-        // CREAR MAPA
-        // =====================================================
-
-        const map = L.map('map');
+    <div class="map-info" id="map-info">
+        <i class="fas fa-map-marker-alt mr-1"></i>
+        24 lugares scout
+    </div>
 
 
-        // =====================================================
-        // OPENSTREETMAP
-        // =====================================================
+<script>
 
-        L.tileLayer(
-            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    /* =====================================================
+       MAPA
+    ===================================================== */
+
+    const mapa = L.map('map', {
+    zoomControl: true
+});
+
+
+    /* =====================================================
+       MAPA BASE
+    ===================================================== */
+
+    /* =====================================================
+   CAPAS DEL MAPA
+   ===================================================== */
+
+/* Mapa normal */
+const mapaNormal = L.tileLayer(
+    'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+        attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
+        maxZoom: 19
+    }
+);
+
+
+/* Vista satelital */
+const mapaSatelital = L.tileLayer(
+    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    {
+        attribution:
+            'Sources: Esri, Maxar, Earthstar Geographics, and the GIS User Community',
+        maxZoom: 19
+    }
+);
+
+
+/* Mapa topográfico con curvas de nivel */
+const mapaTopografico = L.tileLayer(
+    'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+    {
+        attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors, SRTM | &copy; <a href="https://opentopomap.org" target="_blank">OpenTopoMap</a>',
+        maxZoom: 17
+    }
+);
+
+
+/* Mapa normal como capa inicial */
+mapaNormal.addTo(mapa);
+
+
+/* =====================================================
+   CONTROL PARA CAMBIAR DE CAPA
+   ===================================================== */
+
+const mapasBase = {
+
+    "🗺️ Mapa": mapaNormal,
+
+    "🛰️ Satélite": mapaSatelital,
+
+    "🏔️ Topográfico": mapaTopografico
+
+};
+
+
+L.control.layers(
+    mapasBase,
+    null,
+    {
+        position: 'topright',
+        collapsed: true
+    }
+).addTo(mapa);
+
+
+    /* =====================================================
+       VISTA GENERAL DEL BAJÍO
+    ===================================================== */
+
+    const vistaBajio = [
+        [21.05, -101.00],
+        [21.05, -101.00]
+    ];
+
+    mapa.setView([21.05, -101.05], 8);
+
+
+    /* =====================================================
+       ICONO PERSONALIZADO
+    ===================================================== */
+
+    const scoutIcon = L.divIcon({
+
+        className: '',
+
+        html: `
+            <div class="custom-marker">
+                <i class="fas fa-campground"></i>
+            </div>
+        `,
+
+        iconSize: [38, 38],
+        iconAnchor: [19, 38],
+        popupAnchor: [0, -38]
+
+    });
+
+
+    /* =====================================================
+       LUGARES
+    ===================================================== */
+
+    const lugares = [
+
+        {
+            nombre: "Presa Peralillo",
+            municipio: "Guanajuato",
+            lat: 21.058444,
+            lng: -101.169528
+        },
+
+        {
+            nombre: "Ex Hacienda Cañada de Ortega",
+            municipio: "Salamanca",
+            lat: 20.7522190,
+            lng: -101.1749340
+        },
+
+        {
+            nombre: "El Piloncillo",
+            municipio: "Irapuato",
+            lat: 20.6798708,
+            lng: -101.4241984
+        },
+
+        {
+            nombre: "Sierra de Lobos",
+            municipio: "León",
+            lat: 21.2904809,
+            lng: -101.6552010
+        },
+
+        {
+            nombre: "Parque Metropolitano",
+            municipio: "León",
+            lat: 21.1738549,
+            lng: -101.6880051
+        },
+
+        {
+            nombre: "Peña Alta",
+            municipio: "San Diego de la Unión",
+            lat: 21.4609613,
+            lng: -100.9886818
+        },
+
+        {
+            nombre: "Vergel de la Sierra",
+            municipio: "San Felipe",
+            lat: 21.3847405,
+            lng: -101.6340377
+        },
+
+        {
+            nombre: "Campo Alegre",
+            municipio: "San Joaquín",
+            lat: 20.9130691,
+            lng: -99.5744012
+        },
+
+        {
+            nombre: "Cerro del Veinte",
+            municipio: "Irapuato",
+            lat: 20.6794496,
+            lng: -101.4971843
+        },
+
+        {
+            nombre: "Cráter El Rincón de Parangueo",
+            municipio: "Valle de Santiago",
+            lat: 20.4312160,
+            lng: -101.2497244
+        },
+
+        {
+            nombre: "Cañón de la Garita",
+            municipio: "Pénjamo",
+            lat: 20.5488428,
+            lng: -101.6641022
+        },
+
+        {
+            nombre: "Cerro de La Bufa",
+            municipio: "Guanajuato",
+            lat: 20.9944345,
+            lng: -101.2530902
+        },
+
+        {
+            nombre: "Cerro del Muerto",
+            municipio: "Aguascalientes",
+            lat: 21.8700446,
+            lng: -102.4258425
+        },
+
+        {
+            nombre: "Cerro del Cubilete",
+            municipio: "Silao",
+            lat: 21.0120474,
+            lng: -101.3691937
+        },
+
+        {
+            nombre: "Sierra Fría",
+            municipio: "Aguascalientes",
+            lat: 22.1670082,
+            lng: -102.5830887
+        },
+
+        {
+            nombre: "P. N. El Cimatario",
+            municipio: "Querétaro",
+            lat: 20.5269562,
+            lng: -100.3601507
+        },
+
+        {
+            nombre: "Bosque El Peral",
+            municipio: "San José Iturbide",
+            lat: 20.9612718,
+            lng: -100.2879392
+        },
+
+        {
+            nombre: "Parque La Beata",
+            municipio: "Amealco",
+            lat: 20.3130433,
+            lng: -100.2381558
+        },
+
+        {
+            nombre: "Área Protegida Las Musas",
+            municipio: "Manuel Doblado",
+            lat: 20.6359841,
+            lng: -101.8912324
+        },
+
+        {
+            nombre: "Boca de Túnel",
+            municipio: "San José de Gracia",
+            lat: 22.2353936,
+            lng: -102.4437842
+        },
+
+        {
+            nombre: "Peña de Bernal",
+            municipio: "Bernal",
+            lat: 20.7480920,
+            lng: -99.9486163
+        },
+
+        {
+            nombre: "Mirador de Cuatro Palos",
+            municipio: "Pinal de Amoles",
+            lat: 21.0838869,
+            lng: -99.6565660
+        },
+
+        {
+            nombre: "Cerro El Quijay",
+            municipio: "San José Iturbide",
+            lat: 21.2508486,
+            lng: -100.5078710
+        },
+
+        {
+            nombre: "Reserva Sierra Gorda",
+            municipio: "Querétaro",
+            lat: 21.3034190,
+            lng: -99.4561101
+        }
+
+    ];
+
+
+    /* =====================================================
+       CREAR MARCADORES
+    ===================================================== */
+
+    const marcadores = [];
+
+
+    lugares.forEach((lugar) => {
+
+        const marcador = L.marker(
+            [lugar.lat, lugar.lng],
             {
-                maxZoom: 19,
-                attribution: '&copy; OpenStreetMap contributors'
+                icon: scoutIcon
             }
-        ).addTo(map);
+        );
 
 
-        // =====================================================
-        // LUGARES
-        // =====================================================
+        marcador.bindPopup(`
 
-        const lugares = [
+            <div>
 
-            {
-                nombre: "Presa Peralillo",
-                ubicacion: "Guanajuato",
-                lat: 21.058444,
-                lng: -101.169528,
-                descripcion: "Clima frío y bosque de encino. Ideal para técnicas de acecho y fogatas de consejo en zonas permitidas.",
-                actividades: ["FRÍO", "BOSQUE"]
-            },
-
-            {
-                nombre: "Ex Hacienda Cañada de Ortega",
-                ubicacion: "Salamanca, Guanajuato",
-                lat: 20.7522190,
-                lng: -101.1749340,
-                descripcion: "Área natural protegida con vestigios históricos. Perfecta para caminatas de Clan y campamentos base.",
-                actividades: ["HISTORIA", "CAÑÓN"]
-            },
-
-            {
-                nombre: "El Piloncillo",
-                ubicacion: "Irapuato, Guanajuato",
-                lat: 20.6798708,
-                lng: -101.4241984,
-                descripcion: "Zona de terreno técnico para escalada básica y caminatas cortas para la Tropa.",
-                actividades: ["RÁPEL", "SEMIDESIERTO"]
-            },
-
-            {
-                nombre: "Sierra de Lobos",
-                ubicacion: "León, Guanajuato",
-                lat: 21.2904809,
-                lng: -101.6552010,
-                descripcion: "Extensa zona boscosa perfecta para grandes juegos y campamentos de varios días.",
-                actividades: ["AMPLIO", "PINOS"]
-            },
-
-            {
-                nombre: "Parque Metropolitano",
-                ubicacion: "León, Guanajuato",
-                lat: 21.1738549,
-                lng: -101.6880051,
-                descripcion: "Excelente para actividades de día, rallys y técnica scout básica en un entorno seguro.",
-                actividades: ["PRESA", "PISTA"]
-            },
-
-            {
-                nombre: "Peña Alta",
-                ubicacion: "San Diego de la Unión, Guanajuato",
-                lat: 21.4609613,
-                lng: -100.9886818,
-                descripcion: "Área Natural Protegida con bosque de pino y encino. Ideal para caminatas largas y observación.",
-                actividades: ["NATURALEZA", "ALTURA"]
-            },
-
-            {
-                nombre: "Vergel de la Sierra",
-                ubicacion: "San Felipe, Guanajuato",
-                lat: 21.3847405,
-                lng: -101.6340377,
-                descripcion: "Zona boscosa de gran altura, perfecta para juegos de acecho y grandes campamentos base.",
-                actividades: ["PINOS", "PANORAMA"]
-            },
-
-            {
-                nombre: "Campo Alegre",
-                ubicacion: "San Joaquín, Querétaro",
-                lat: 20.9130691,
-                lng: -99.5744012,
-                descripcion: "Parque nacional seguro y amplio en la Sierra Gorda. Ideal para dinámicas de gran grupo.",
-                actividades: ["SEGURO", "AMPLIO"]
-            },
-
-            {
-                nombre: "Cerro del Veinte",
-                ubicacion: "Irapuato, Guanajuato",
-                lat: 20.6794496,
-                lng: -101.4971843,
-                descripcion: "Cerro emblemático ideal para caminatas de desafío y orientación. Excelente vista panorámica para la Tropa y el Clan.",
-                actividades: ["DESAFÍO", "CAMINATA"]
-            },
-
-            {
-                nombre: "Cráter El Rincón de Parangueo",
-                ubicacion: "Valle de Santiago, Guanajuato",
-                lat: 20.4312160,
-                lng: -101.2497244,
-                descripcion: "Impresionante cráter con un interior de paisaje blanco y salitroso. El cruce por su túnel oscuro es ideal para una gran experiencia de mística y aventura.",
-                actividades: ["AVENTURA", "CRÁTER"]
-            },
-
-            {
-                nombre: "Cañón de la Garita",
-                ubicacion: "Pénjamo, Guanajuato",
-                lat: 20.5488428,
-                lng: -101.6641022,
-                descripcion: "Impresionante cañón natural en la Sierra de Pénjamo, rodeado de imponentes paredes de roca y zonas con agua.",
-                actividades: ["ARROYO", "EXPLORACIÓN"]
-            },
-
-            {
-                nombre: "Cerro de La Bufa",
-                ubicacion: "Guanajuato, Guanajuato",
-                lat: 20.9944345,
-                lng: -101.2530902,
-                descripcion: "Emblemática formación rocosa con senderos de gran pendiente. Ideal para caminatas exigentes y prácticas de orientación.",
-                actividades: ["RÁPEL", "SENDERISMO"]
-            },
-
-            {
-                nombre: "Cerro del Muerto",
-                ubicacion: "Aguascalientes",
-                lat: 21.8700446,
-                lng: -102.4258425,
-                descripcion: "Imponente cresta montañosa ideal para caminatas de gran resistencia física.",
-                actividades: ["RESISTENCIA", "HIKING"]
-            },
-
-            {
-                nombre: "Cerro del Cubilete",
-                ubicacion: "Silao, Guanajuato",
-                lat: 21.0120474,
-                lng: -101.3691937,
-                descripcion: "Destino versátil con rutas rurales ideales para evaluar la resistencia en caminatas kilométricas.",
-                actividades: ["ORIENTACIÓN", "CAMINATA"]
-            },
-
-            {
-                nombre: "Sierra Fría",
-                ubicacion: "Aguascalientes",
-                lat: 22.1670082,
-                lng: -102.5830887,
-                descripcion: "Reserva forestal masiva de clima frío. Entorno ideal para campamentos de larga duración y exploración.",
-                actividades: ["CAMPISMO", "EXPLORACIÓN"]
-            },
-
-            {
-                nombre: "Parque Nacional El Cimatario",
-                ubicacion: "Querétaro",
-                lat: 20.5269562,
-                lng: -100.3601507,
-                descripcion: "Zona natural cercana a Querétaro ideal para caminatas y actividades al aire libre.",
-                actividades: ["NATURALEZA", "CAMINATA"]
-            },
-
-            {
-                nombre: "Bosque El Peral",
-                ubicacion: "San José Iturbide, Guanajuato",
-                lat: 20.9612718,
-                lng: -100.2879392,
-                descripcion: "Hermoso bosque alpino de coníferas. Ideal para campamentos de fin de semana y actividades scout.",
-                actividades: ["BOSQUE", "FOGATAS"]
-            },
-
-            {
-                nombre: "Parque La Beata",
-                ubicacion: "Amealco, Querétaro",
-                lat: 20.3130433,
-                lng: -100.2381558,
-                descripcion: "Zona boscosa templada con senderos rústicos bien delimitados.",
-                actividades: ["SENDEROS", "PATRULLAS"]
-            },
-
-            {
-                nombre: "Área Protegida Las Musas",
-                ubicacion: "Manuel Doblado, Guanajuato",
-                lat: 20.6359841,
-                lng: -101.8912324,
-                descripcion: "Paraje ribereño con ahuehuetes. Ideal para actividades scout al aire libre.",
-                actividades: ["RÍO", "CABUYERÍA"]
-            },
-
-            {
-                nombre: "Boca de Túnel",
-                ubicacion: "San José de Gracia, Aguascalientes",
-                lat: 22.2353936,
-                lng: -102.4437842,
-                descripcion: "Sistema de cañones y lagunas. Ideal para retos de altura, senderismo y aventura.",
-                actividades: ["AVENTURA", "ROVERS"]
-            },
-
-            {
-                nombre: "Peña de Bernal",
-                ubicacion: "Bernal, Querétaro",
-                lat: 20.7480920,
-                lng: -99.9486163,
-                descripcion: "Uno de los monolitos más grandes del mundo. Destino ideal para retos de resistencia.",
-                actividades: ["MONTAÑA", "RETO"]
-            },
-
-            {
-                nombre: "Mirador de Cuatro Palos",
-                ubicacion: "Pinal de Amoles, Querétaro",
-                lat: 21.0838869,
-                lng: -99.6565660,
-                descripcion: "Espectacular punto de transición entre el semidesierto y el bosque de niebla.",
-                actividades: ["MÍSTICA", "ACAMPADO"]
-            },
-
-            {
-                nombre: "Cerro El Quijay",
-                ubicacion: "San José Iturbide, Guanajuato",
-                lat: 21.2508486,
-                lng: -100.5078710,
-                descripcion: "Elevación agreste y semidesértica. Perfecta para exploración, mapas y orientación.",
-                actividades: ["EXPLORACIÓN", "TOPOGRAFÍA"]
-            },
-
-            {
-                nombre: "Reserva Sierra Gorda",
-                ubicacion: "Querétaro",
-                lat: 21.3034190,
-                lng: -99.4561101,
-                descripcion: "Inmensa reserva de la biosfera con múltiples microclimas. Excelente para expediciones de larga distancia.",
-                actividades: ["EXPEDICIÓN", "SERVICIO"]
-            }
-
-        ];
-
-
-        // =====================================================
-        // GRUPO DE MARCADORES
-        // =====================================================
-
-        const grupoMarcadores = L.featureGroup();
-
-
-        // Guardamos los marcadores individualmente
-        const marcadores = [];
-
-
-        // =====================================================
-        // CREAR MARCADORES
-        // =====================================================
-
-        lugares.forEach((lugar, indice) => {
-
-            const marcador = L.marker([
-                lugar.lat,
-                lugar.lng
-            ]);
-
-
-            // Crear etiquetas de actividades
-
-            const etiquetas = lugar.actividades
-                .map(actividad =>
-                    `<span class="popup-tag">${actividad}</span>`
-                )
-                .join("");
-
-
-            // Contenido del popup
-
-            marcador.bindPopup(`
-
-                <div>
-
-                    <div class="popup-title">
-                        📍 ${lugar.nombre}
-                    </div>
-
-                    <div class="popup-location">
-                        <i class="fas fa-map-marker-alt"></i>
-                        ${lugar.ubicacion}
-                    </div>
-
-                    <div class="popup-description">
-                        ${lugar.descripcion}
-                    </div>
-
-                    <div class="popup-tags">
-                        ${etiquetas}
-                    </div>
-
-                    <a
-                        href="https://www.google.com/maps/search/?api=1&query=${lugar.lat},${lugar.lng}"
-                        target="_blank"
-                        class="popup-button">
-
-                        <i class="fas fa-location-arrow"></i>
-                        Ver en Google Maps
-
-                    </a>
-
+                <div class="popup-title">
+                    ${lugar.nombre}
                 </div>
 
-            `);
+                <div class="popup-municipio">
+                    ${lugar.municipio}
+                </div>
+
+                <a
+                    href="https://www.google.com/maps/search/?api=1&query=${lugar.lat},${lugar.lng}"
+                    target="_blank"
+                    class="popup-link">
+
+                    <i class="fas fa-location-arrow mr-1"></i>
+                    Ver en Google Maps
+
+                </a>
+
+            </div>
+
+        `);
 
 
-            marcador.addTo(grupoMarcadores);
+        marcador.addTo(mapa);
 
-            marcadores.push(marcador);
+        marcadores.push({
+            marcador: marcador,
+            datos: lugar
+        });
+
+    });
+
+
+    /* =====================================================
+       BUSCADOR
+    ===================================================== */
+
+    const buscador = document.getElementById('buscador');
+    const clearSearch = document.getElementById('clear-search');
+    const mapInfo = document.getElementById('map-info');
+
+
+    buscador.addEventListener('input', function() {
+
+        const texto = buscador.value
+            .toLowerCase()
+            .trim();
+
+
+        /* Mostrar u ocultar la X */
+
+        if (texto.length > 0) {
+
+            clearSearch.style.display = 'flex';
+
+        } else {
+
+            clearSearch.style.display = 'none';
+
+        }
+
+
+        /* Si no hay búsqueda */
+
+        if (texto === '') {
+
+            mostrarTodos();
+
+            return;
+
+        }
+
+
+        /* Filtrar */
+
+        const encontrados = [];
+
+
+        marcadores.forEach((item) => {
+
+            const nombre =
+                item.datos.nombre.toLowerCase();
+
+            const municipio =
+                item.datos.municipio.toLowerCase();
+
+
+            if (
+                nombre.includes(texto) ||
+                municipio.includes(texto)
+            ) {
+
+                item.marcador.addTo(mapa);
+
+                encontrados.push(item);
+
+            } else {
+
+                mapa.removeLayer(item.marcador);
+
+            }
 
         });
 
 
-        // =====================================================
-        // AGREGAR MARCADORES
-        // =====================================================
+        /* Actualizar contador */
 
-        grupoMarcadores.addTo(map);
+        mapInfo.innerHTML = `
+            <i class="fas fa-map-marker-alt mr-1"></i>
+            ${encontrados.length} lugar${encontrados.length === 1 ? '' : 'es'}
+        `;
 
 
-        // =====================================================
-        // MOSTRAR TODOS LOS LUGARES
-        // =====================================================
+        /* Centrar resultados */
 
-        function mostrarTodos() {
+        if (encontrados.length === 1) {
 
-            map.fitBounds(
-                grupoMarcadores.getBounds(),
+            mapa.setView(
+                [
+                    encontrados[0].datos.lat,
+                    encontrados[0].datos.lng
+                ],
+                12
+            );
+
+            encontrados[0].marcador.openPopup();
+
+        }
+
+        else if (encontrados.length > 1) {
+
+            const grupo = L.featureGroup(
+                encontrados.map(item => item.marcador)
+            );
+
+            mapa.fitBounds(
+                grupo.getBounds(),
                 {
-                    padding: [40, 40]
+                    padding: [50, 50],
+                    maxZoom: 10
                 }
             );
 
         }
 
+    });
+
+
+    /* =====================================================
+       BOTÓN X
+    ===================================================== */
+
+    clearSearch.addEventListener('click', function() {
+
+        /* Limpiar buscador */
+
+        buscador.value = '';
+
+        /* Ocultar X */
+
+        clearSearch.style.display = 'none';
+
+        /* Mostrar todos los lugares */
 
         mostrarTodos();
 
+        /* Regresar a vista general */
 
-        // =====================================================
-        // BUSCADOR
-        // =====================================================
+        mapa.setView(
+            [21.05, -101.05],
+            8
+        );
 
-        const searchInput = document.getElementById("mapSearch");
-        const results = document.getElementById("results");
-        const clearSearch = document.getElementById("clearSearch");
+        /* Quitar foco */
 
+        buscador.blur();
 
-        searchInput.addEventListener("input", function() {
-
-            const termino = this.value
-                .toLowerCase()
-                .trim();
+    });
 
 
-            results.innerHTML = "";
+    /* =====================================================
+       MOSTRAR TODOS
+    ===================================================== */
 
+    function mostrarTodos() {
 
-            if (termino === "") {
+        marcadores.forEach((item) => {
 
-                results.classList.add("hidden");
-                clearSearch.style.display = "none";
-
-                return;
-
-            }
-
-
-            clearSearch.style.display = "block";
-
-
-            const encontrados = lugares.filter(lugar => {
-
-                const texto = (
-
-                    lugar.nombre +
-                    " " +
-                    lugar.ubicacion +
-                    " " +
-                    lugar.actividades.join(" ")
-
-                ).toLowerCase();
-
-
-                return texto.includes(termino);
-
-            });
-
-
-            if (encontrados.length === 0) {
-
-                results.innerHTML = `
-                    <div class="no-results">
-                        <i class="fas fa-search mr-1"></i>
-                        No encontramos ese lugar.
-                    </div>
-                `;
-
-                results.classList.remove("hidden");
-
-                return;
-
-            }
-
-
-            encontrados.forEach(lugar => {
-
-                const indice = lugares.indexOf(lugar);
-
-
-                const item = document.createElement("div");
-
-                item.className = "result-item";
-
-
-                item.innerHTML = `
-
-                    <div class="result-name">
-                        📍 ${lugar.nombre}
-                    </div>
-
-                    <div class="result-location">
-                        ${lugar.ubicacion}
-                    </div>
-
-                `;
-
-
-                item.addEventListener("click", () => {
-
-                    const marcador = marcadores[indice];
-
-
-                    map.setView(
-                        [lugar.lat, lugar.lng],
-                        14
-                    );
-
-
-                    marcador.openPopup();
-
-
-                    results.classList.add("hidden");
-
-                });
-
-
-                results.appendChild(item);
-
-            });
-
-
-            results.classList.remove("hidden");
+            item.marcador.addTo(mapa);
 
         });
 
 
-        // =====================================================
-        // LIMPIAR BUSCADOR
-        // =====================================================
+        mapInfo.innerHTML = `
+            <i class="fas fa-map-marker-alt mr-1"></i>
+            ${lugares.length} lugares scout
+        `;
 
-        clearSearch.addEventListener("click", () => {
-
-            searchInput.value = "";
-
-            results.innerHTML = "";
-
-            results.classList.add("hidden");
-
-            clearSearch.style.display = "none";
-
-            mostrarTodos();
-
-            searchInput.focus();
-
-        });
+    }
 
 
-        // =====================================================
-        // BOTÓN MOSTRAR TODOS
-        // =====================================================
-
-        document
-            .getElementById("showAll")
-            .addEventListener("click", () => {
-
-                searchInput.value = "";
-
-                results.innerHTML = "";
-
-                results.classList.add("hidden");
-
-                clearSearch.style.display = "none";
-
-                mostrarTodos();
-
-            });
-
-
-        // =====================================================
-        // CERRAR RESULTADOS AL TOCAR EL MAPA
-        // =====================================================
-
-        map.on("click", () => {
-
-            results.classList.add("hidden");
-
-        });
-
-    </script>
+</script>
 
 </body>
 </html>
