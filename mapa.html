@@ -8,7 +8,7 @@
 
     <link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
 
-    <!-- Tailwind -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Font Awesome -->
@@ -20,6 +20,7 @@
           href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
     <style>
+
         body {
             margin: 0;
             background: #F5F5F0;
@@ -35,21 +36,57 @@
         }
 
         .leaflet-popup-content-wrapper {
-            border-radius: 12px;
+            border-radius: 14px;
         }
 
         .leaflet-popup-content {
-            margin: 14px;
+            margin: 16px;
+            min-width: 190px;
         }
+
+        .popup-title {
+            font-size: 17px;
+            font-weight: 800;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+
+        .popup-location {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 10px;
+        }
+
+        .popup-button {
+            display: block;
+            background: #1D4ED8;
+            color: white !important;
+            text-align: center;
+            padding: 9px 12px;
+            border-radius: 9px;
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            margin-top: 12px;
+        }
+
+        .popup-button:hover {
+            background: #1e40af;
+        }
+
     </style>
 </head>
 
 <body>
 
-    <!-- Barra superior -->
+    <!-- ==========================================
+         BARRA SUPERIOR
+    =========================================== -->
+
     <nav class="scout-green text-white h-[72px] px-4 shadow-lg flex items-center justify-between">
 
         <div class="flex items-center gap-3">
+
             <img src="favicon-64.png"
                  alt="Logo Red Scout Bajío"
                  class="w-10 h-10 object-contain rounded-full bg-white p-0.5">
@@ -63,66 +100,304 @@
                     Red Scout Bajío
                 </p>
             </div>
+
         </div>
+
 
         <a href="index.html"
            class="bg-yellow-500 text-green-900 px-4 py-2 rounded-full font-bold text-sm hover:bg-yellow-400 transition">
 
             <i class="fas fa-arrow-left mr-1"></i>
             Volver
+
         </a>
 
     </nav>
 
-    <!-- Mapa -->
+
+    <!-- ==========================================
+         MAPA
+    =========================================== -->
+
     <div id="map"></div>
 
 
-    <!-- Leaflet -->
+    <!-- ==========================================
+         LEAFLET
+    =========================================== -->
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 
     <script>
 
-        // ==========================================
-        // MAPA PRINCIPAL
-        // ==========================================
+        // =====================================================
+        // CREAR MAPA
+        // =====================================================
 
-        const map = L.map('map').setView([21.05, -101.25], 8);
+        const map = L.map('map');
 
 
-        // ==========================================
-        // MAPA OPENSTREETMAP
-        // ==========================================
+        // =====================================================
+        // OPENSTREETMAP
+        // =====================================================
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+
             maxZoom: 19,
+
             attribution: '&copy; OpenStreetMap contributors'
+
         }).addTo(map);
 
 
-        // ==========================================
-        // MARCADOR DE EJEMPLO
-        // ==========================================
+        // =====================================================
+        // LUGARES DEL MAPA
+        // =====================================================
 
-        L.marker([20.6767, -101.3569])
-            .addTo(map)
-            .bindPopup(`
-                <div class="text-center">
+        const lugares = [
 
-                    <h3 class="font-bold text-lg text-gray-800">
-                        El Piloncillo
-                    </h3>
+            {
+                nombre: "Presa Peralillo",
+                ubicacion: "Guanajuato",
+                lat: 21.058444,
+                lng: -101.169528
+            },
 
-                    <p class="text-sm text-gray-600 mt-1">
-                        Irapuato, Guanajuato
-                    </p>
+            {
+                nombre: "Ex Hacienda Cañada de Ortega",
+                ubicacion: "Salamanca, Guanajuato",
+                lat: 20.7522190,
+                lng: -101.1749340
+            },
 
-                    <p class="text-xs text-gray-500 mt-2">
-                        Rápel · Semidesierto
-                    </p>
+            {
+                nombre: "El Piloncillo",
+                ubicacion: "Irapuato, Guanajuato",
+                lat: 20.6798708,
+                lng: -101.4241984
+            },
+
+            {
+                nombre: "Sierra de Lobos",
+                ubicacion: "León, Guanajuato",
+                lat: 21.2904809,
+                lng: -101.6552010
+            },
+
+            {
+                nombre: "Parque Metropolitano",
+                ubicacion: "León, Guanajuato",
+                lat: 21.1738549,
+                lng: -101.6880051
+            },
+
+            {
+                nombre: "Peña Alta",
+                ubicacion: "San Diego de la Unión, Guanajuato",
+                lat: 21.4609613,
+                lng: -100.9886818
+            },
+
+            {
+                nombre: "Vergel de la Sierra",
+                ubicacion: "San Felipe, Guanajuato",
+                lat: 21.3847405,
+                lng: -101.6340377
+            },
+
+            {
+                nombre: "Campo Alegre",
+                ubicacion: "San Joaquín, Querétaro",
+                lat: 20.9130691,
+                lng: -99.5744012
+            },
+
+            {
+                nombre: "Cerro del Veinte",
+                ubicacion: "Irapuato, Guanajuato",
+                lat: 20.6794496,
+                lng: -101.4971843
+            },
+
+            {
+                nombre: "Cráter El Rincón de Parangueo",
+                ubicacion: "Valle de Santiago, Guanajuato",
+                lat: 20.4312160,
+                lng: -101.2497244
+            },
+
+            {
+                nombre: "Cañón de la Garita",
+                ubicacion: "Pénjamo, Guanajuato",
+                lat: 20.5488428,
+                lng: -101.6641022
+            },
+
+            {
+                nombre: "Cerro de La Bufa",
+                ubicacion: "Guanajuato, Guanajuato",
+                lat: 20.9944345,
+                lng: -101.2530902
+            },
+
+            {
+                nombre: "Cerro del Muerto",
+                ubicacion: "Aguascalientes",
+                lat: 21.8700446,
+                lng: -102.4258425
+            },
+
+            {
+                nombre: "Cerro del Cubilete",
+                ubicacion: "Silao, Guanajuato",
+                lat: 21.0120474,
+                lng: -101.3691937
+            },
+
+            {
+                nombre: "Sierra Fría",
+                ubicacion: "Aguascalientes",
+                lat: 22.1670082,
+                lng: -102.5830887
+            },
+
+            {
+                nombre: "Parque Nacional El Cimatario",
+                ubicacion: "Querétaro",
+                lat: 20.5269562,
+                lng: -100.3601507
+            },
+
+            {
+                nombre: "Bosque El Peral",
+                ubicacion: "San José Iturbide, Guanajuato",
+                lat: 20.9612718,
+                lng: -100.2879392
+            },
+
+            {
+                nombre: "Parque La Beata",
+                ubicacion: "Amealco, Querétaro",
+                lat: 20.3130433,
+                lng: -100.2381558
+            },
+
+            {
+                nombre: "Área Protegida Las Musas",
+                ubicacion: "Manuel Doblado, Guanajuato",
+                lat: 20.6359841,
+                lng: -101.8912324
+            },
+
+            {
+                nombre: "Boca de Túnel",
+                ubicacion: "San José de Gracia, Aguascalientes",
+                lat: 22.2353936,
+                lng: -102.4437842
+            },
+
+            {
+                nombre: "Peña de Bernal",
+                ubicacion: "Bernal, Querétaro",
+                lat: 20.7480920,
+                lng: -99.9486163
+            },
+
+            {
+                nombre: "Mirador de Cuatro Palos",
+                ubicacion: "Pinal de Amoles, Querétaro",
+                lat: 21.0838869,
+                lng: -99.6565660
+            },
+
+            {
+                nombre: "Cerro El Quijay",
+                ubicacion: "San José Iturbide, Guanajuato",
+                lat: 21.2508486,
+                lng: -100.5078710
+            },
+
+            {
+                nombre: "Reserva Sierra Gorda",
+                ubicacion: "Querétaro",
+                lat: 21.3034190,
+                lng: -99.4561101
+            }
+
+        ];
+
+
+        // =====================================================
+        // GRUPO PARA LOS MARCADORES
+        // =====================================================
+
+        const grupoMarcadores = L.featureGroup();
+
+
+        // =====================================================
+        // CREAR MARCADORES
+        // =====================================================
+
+        lugares.forEach(lugar => {
+
+            const marcador = L.marker([
+                lugar.lat,
+                lugar.lng
+            ]);
+
+
+            marcador.bindPopup(`
+
+                <div>
+
+                    <div class="popup-title">
+                        📍 ${lugar.nombre}
+                    </div>
+
+                    <div class="popup-location">
+                        ${lugar.ubicacion}
+                    </div>
+
+                    <a
+                        href="https://www.google.com/maps/search/?api=1&query=${lugar.lat},${lugar.lng}"
+                        target="_blank"
+                        class="popup-button">
+
+                        <i class="fas fa-location-arrow"></i>
+                        Ver en Google Maps
+
+                    </a>
 
                 </div>
+
             `);
+
+
+            marcador.addTo(grupoMarcadores);
+
+        });
+
+
+        // =====================================================
+        // AGREGAR MARCADORES AL MAPA
+        // =====================================================
+
+        grupoMarcadores.addTo(map);
+
+
+        // =====================================================
+        // AJUSTAR MAPA AUTOMÁTICAMENTE
+        // PARA MOSTRAR TODOS LOS LUGARES
+        // =====================================================
+
+        map.fitBounds(
+            grupoMarcadores.getBounds(),
+            {
+                padding: [40, 40]
+            }
+        );
+
 
     </script>
 
