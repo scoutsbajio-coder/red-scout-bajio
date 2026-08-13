@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -14,22 +15,27 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Font Awesome -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    >
 
     <!-- Leaflet -->
-    <link rel="stylesheet"
-          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          integrity="sha256-p4NxAoJBhIINfQ3eM7H6mJ5u2mFJk6tP1a0xJ5k5v3M="
-          crossorigin=""/>
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
 
     <script
-        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-        crossorigin="">
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
     </script>
 
+
     <style>
+
+        /* =====================================================
+           GENERAL
+        ===================================================== */
 
         body {
             margin: 0;
@@ -37,200 +43,402 @@
             font-family: Arial, sans-serif;
         }
 
+
+        /* =====================================================
+           MAPA
+        ===================================================== */
+
         #map {
             height: calc(100vh - 72px);
             width: 100%;
         }
 
-        /* Controles de zoom */
-.leaflet-control-zoom {
-    position: fixed !important;
-    right: 12px !important;
-    bottom: 70px !important;
-    left: auto !important;
-    top: auto !important;
-    margin: 0 !important;
-}
 
-.leaflet-control-zoom a {
-    width: 44px !important;
-    height: 44px !important;
-    line-height: 44px !important;
-    font-size: 23px !important;
-}
-
-/* Control de capas */
-.leaflet-control-layers {
-    border-radius: 10px !important;
-    box-shadow: 0 3px 12px rgba(0,0,0,.25) !important;
-}
+        /* =====================================================
+           COLOR SCOUT
+        ===================================================== */
 
         .scout-green {
             background-color: #1B4332;
         }
 
-        /* Marcadores */
+
+        /* =====================================================
+           CONTROLES DE ZOOM
+        ===================================================== */
+
+        .leaflet-control-zoom {
+
+            position: fixed !important;
+
+            right: 12px !important;
+            bottom: 70px !important;
+
+            left: auto !important;
+            top: auto !important;
+
+            margin: 0 !important;
+
+        }
+
+
+        .leaflet-control-zoom a {
+
+            width: 44px !important;
+            height: 44px !important;
+
+            line-height: 44px !important;
+
+            font-size: 23px !important;
+
+        }
+
+
+        /* =====================================================
+           CONTROL DE CAPAS
+        ===================================================== */
+
+        .leaflet-control-layers {
+
+            border-radius: 10px !important;
+
+            box-shadow:
+                0 3px 12px rgba(0,0,0,.25) !important;
+
+        }
+
+
+        /* =====================================================
+           MARCADORES
+        ===================================================== */
 
         .custom-marker {
+
             background-color: #1B4332;
+
             width: 38px;
             height: 38px;
-            border-radius: 50% 50% 50% 0;
+
+            border-radius: 50% 50% 50% 0%;
+
             transform: rotate(-45deg);
+
             display: flex;
+
             align-items: center;
             justify-content: center;
+
             border: 3px solid white;
-            box-shadow: 0 3px 8px rgba(0,0,0,.35);
+
+            box-shadow:
+                0 3px 8px rgba(0,0,0,.35);
+
         }
+
 
         .custom-marker i {
+
             color: white;
+
             font-size: 16px;
+
             transform: rotate(45deg);
+
         }
 
-        /* Popup */
+
+        /* =====================================================
+           POPUP
+        ===================================================== */
 
         .popup-title {
+
             font-weight: 800;
+
             font-size: 16px;
+
             color: #1B4332;
+
             margin-bottom: 4px;
+
         }
+
 
         .popup-municipio {
+
             font-size: 11px;
+
             font-weight: bold;
+
             color: #2563eb;
+
             text-transform: uppercase;
+
             margin-bottom: 7px;
+
         }
+
 
         .popup-link {
+
             display: block;
+
             margin-top: 10px;
+
             background: #1D4ED8;
+
             color: white !important;
+
             padding: 8px 10px;
+
             border-radius: 8px;
+
             text-align: center;
+
             text-decoration: none;
+
             font-weight: bold;
+
         }
 
-        /* Buscador */
+
+        /* =====================================================
+           BUSCADOR
+        ===================================================== */
 
         .search-container {
+
             position: absolute;
+
             top: 88px;
+
             left: 50%;
+
             transform: translateX(-50%);
+
             z-index: 1000;
+
             width: min(92%, 420px);
+
         }
+
 
         .search-box {
+
             position: relative;
+
             background: white;
+
             border-radius: 14px;
-            box-shadow: 0 5px 18px rgba(0,0,0,.20);
+
+            box-shadow:
+                0 5px 18px rgba(0,0,0,.20);
+
             overflow: hidden;
+
         }
+
 
         .search-icon {
+
             position: absolute;
+
             left: 14px;
+
             top: 50%;
+
             transform: translateY(-50%);
+
             color: #9ca3af;
+
             pointer-events: none;
+
         }
+
 
         #buscador {
+
             width: 100%;
+
             border: none;
+
             outline: none;
+
             padding: 14px 45px 14px 42px;
+
             font-size: 14px;
+
+            box-sizing: border-box;
+
         }
+
+
+        /* =====================================================
+           BOTÓN X DEL BUSCADOR
+        ===================================================== */
 
         #clear-search {
+
             position: absolute;
+
             right: 10px;
+
             top: 50%;
+
             transform: translateY(-50%);
+
             width: 30px;
             height: 30px;
+
             border-radius: 50%;
+
             border: none;
+
             background: #e5e7eb;
+
             color: #4b5563;
+
             cursor: pointer;
+
             display: none;
+
             align-items: center;
             justify-content: center;
+
         }
+
 
         #clear-search:hover {
+
             background: #d1d5db;
+
         }
 
-        /* Información inferior */
+
+        /* =====================================================
+           INFORMACIÓN INFERIOR
+        ===================================================== */
 
         .map-info {
+
             position: absolute;
+
             bottom: 20px;
+
             left: 50%;
+
             transform: translateX(-50%);
+
             z-index: 1000;
+
             background: rgba(27,67,50,.95);
+
             color: white;
+
             padding: 9px 16px;
+
             border-radius: 999px;
+
             font-size: 12px;
+
             font-weight: bold;
-            box-shadow: 0 4px 12px rgba(0,0,0,.25);
+
+            box-shadow:
+                0 4px 12px rgba(0,0,0,.25);
+
             white-space: nowrap;
+
         }
+
+
+        /* =====================================================
+           CELULAR
+        ===================================================== */
 
         @media (max-width: 640px) {
 
             #map {
+
                 height: calc(100vh - 64px);
+
             }
+
 
             .search-container {
+
                 top: 76px;
+
+                width: 92%;
+
             }
 
+
             .map-info {
+
                 bottom: 15px;
+
                 font-size: 11px;
+
                 padding: 8px 13px;
+
+            }
+
+
+            /* Zoom abajo a la derecha */
+
+            .leaflet-control-zoom {
+
+                right: 12px !important;
+
+                bottom: 75px !important;
+
+            }
+
+
+            .leaflet-control-zoom a {
+
+                width: 46px !important;
+
+                height: 46px !important;
+
+                line-height: 46px !important;
+
+                font-size: 24px !important;
+
             }
 
         }
 
     </style>
+
 </head>
+
 
 <body>
 
-    <!-- Barra superior -->
 
-    <nav class="scout-green text-white h-[72px] flex items-center shadow-lg relative z-[1100]">
+    <!-- =====================================================
+         BARRA SUPERIOR
+    ===================================================== -->
 
-        <div class="container mx-auto px-4 flex items-center justify-between">
+    <nav
+        class="scout-green text-white h-[72px] flex items-center shadow-lg relative z-[1100]"
+    >
+
+        <div
+            class="container mx-auto px-4 flex items-center justify-between"
+        >
 
             <div class="flex items-center gap-3">
 
                 <img
                     src="favicon-64.png"
                     alt="Red Scout Bajío"
-                    class="w-10 h-10 object-contain rounded-full bg-white p-0.5">
+                    class="w-10 h-10 object-contain rounded-full bg-white p-0.5"
+                >
 
                 <div>
+
                     <h1 class="font-bold text-lg leading-tight">
                         Mapa Scout
                     </h1>
@@ -238,15 +446,19 @@
                     <p class="text-xs text-green-200">
                         Red Scout Bajío
                     </p>
+
                 </div>
 
             </div>
 
+
             <a
                 href="index.html"
-                class="bg-yellow-500 text-green-900 px-4 py-2 rounded-full font-bold text-sm hover:bg-yellow-400 transition">
+                class="bg-yellow-500 text-green-900 px-4 py-2 rounded-full font-bold text-sm hover:bg-yellow-400 transition"
+            >
 
                 <i class="fas fa-home mr-1"></i>
+
                 Inicio
 
             </a>
@@ -256,7 +468,9 @@
     </nav>
 
 
-    <!-- Buscador -->
+    <!-- =====================================================
+         BUSCADOR
+    ===================================================== -->
 
     <div class="search-container">
 
@@ -264,16 +478,20 @@
 
             <i class="fas fa-search search-icon"></i>
 
+
             <input
                 type="text"
                 id="buscador"
                 placeholder="Buscar lugar o municipio..."
-                autocomplete="off">
+                autocomplete="off"
+            >
+
 
             <button
                 id="clear-search"
                 type="button"
-                aria-label="Limpiar búsqueda">
+                aria-label="Limpiar búsqueda"
+            >
 
                 <i class="fas fa-times"></i>
 
@@ -284,114 +502,170 @@
     </div>
 
 
-    <!-- Mapa -->
+    <!-- =====================================================
+         MAPA
+    ===================================================== -->
 
     <div id="map"></div>
 
 
-    <!-- Información -->
+    <!-- =====================================================
+         INFORMACIÓN
+    ===================================================== -->
 
-    <div class="map-info" id="map-info">
+    <div
+        class="map-info"
+        id="map-info"
+    >
+
         <i class="fas fa-map-marker-alt mr-1"></i>
+
         24 lugares scout
+
     </div>
+
 
 
 <script>
 
+
     /* =====================================================
-       MAPA
+       CREAR MAPA
     ===================================================== */
 
     const mapa = L.map('map', {
-    zoomControl: true
-});
+
+        zoomControl: true
+
+    });
+
 
 
     /* =====================================================
-       MAPA BASE
+       CAPAS DEL MAPA
     ===================================================== */
 
+
+    /* -----------------------------------------------------
+       MAPA NORMAL
+    ----------------------------------------------------- */
+
+    const mapaNormal = L.tileLayer(
+
+        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+
+        {
+
+            attribution:
+                '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
+
+            maxZoom: 19
+
+        }
+
+    );
+
+
+
+    /* -----------------------------------------------------
+       SATÉLITE
+    ----------------------------------------------------- */
+
+    const mapaSatelital = L.tileLayer(
+
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+
+        {
+
+            attribution:
+                'Sources: Esri, Maxar, Earthstar Geographics, and the GIS User Community',
+
+            maxZoom: 19
+
+        }
+
+    );
+
+
+
+    /* -----------------------------------------------------
+       TOPOGRÁFICO
+    ----------------------------------------------------- */
+
+    const mapaTopografico = L.tileLayer(
+
+        'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+
+        {
+
+            attribution:
+                '&copy; OpenStreetMap contributors, SRTM | &copy; OpenTopoMap',
+
+            maxZoom: 17
+
+        }
+
+    );
+
+
+
+    /* -----------------------------------------------------
+       MAPA INICIAL
+    ----------------------------------------------------- */
+
+    mapaNormal.addTo(mapa);
+
+
+
     /* =====================================================
-   CAPAS DEL MAPA
-   ===================================================== */
-
-/* Mapa normal */
-const mapaNormal = L.tileLayer(
-    'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-    {
-        attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
-        maxZoom: 19
-    }
-);
-
-
-/* Vista satelital */
-const mapaSatelital = L.tileLayer(
-    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-    {
-        attribution:
-            'Sources: Esri, Maxar, Earthstar Geographics, and the GIS User Community',
-        maxZoom: 19
-    }
-);
-
-
-/* Mapa topográfico con curvas de nivel */
-const mapaTopografico = L.tileLayer(
-    'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
-    {
-        attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors, SRTM | &copy; <a href="https://opentopomap.org" target="_blank">OpenTopoMap</a>',
-        maxZoom: 17
-    }
-);
-
-
-/* Mapa normal como capa inicial */
-mapaNormal.addTo(mapa);
-
-
-/* =====================================================
-   CONTROL PARA CAMBIAR DE CAPA
-   ===================================================== */
-
-const mapasBase = {
-
-    "🗺️ Mapa": mapaNormal,
-
-    "🛰️ Satélite": mapaSatelital,
-
-    "🏔️ Topográfico": mapaTopografico
-
-};
-
-
-L.control.layers(
-    mapasBase,
-    null,
-    {
-        position: 'topright',
-        collapsed: true
-    }
-).addTo(mapa);
-
-
-    /* =====================================================
-       VISTA GENERAL DEL BAJÍO
+       CONTROL DE CAPAS
     ===================================================== */
 
-    const vistaBajio = [
-        [21.05, -101.00],
-        [21.05, -101.00]
-    ];
+    const mapasBase = {
 
-    mapa.setView([21.05, -101.05], 8);
+        "🗺️ Mapa": mapaNormal,
+
+        "🛰️ Satélite": mapaSatelital,
+
+        "🏔️ Topográfico": mapaTopografico
+
+    };
+
+
+    L.control.layers(
+
+        mapasBase,
+
+        null,
+
+        {
+
+            position: 'topright',
+
+            collapsed: true
+
+        }
+
+    ).addTo(mapa);
+
 
 
     /* =====================================================
-       ICONO PERSONALIZADO
+       VISTA GENERAL
+    ===================================================== */
+
+    mapa.setView(
+
+        [21.05, -101.05],
+
+        8
+
+    );
+
+
+
+    /* =====================================================
+       ICONO SCOUT
     ===================================================== */
 
     const scoutIcon = L.divIcon({
@@ -399,16 +673,23 @@ L.control.layers(
         className: '',
 
         html: `
+
             <div class="custom-marker">
+
                 <i class="fas fa-campground"></i>
+
             </div>
+
         `,
 
         iconSize: [38, 38],
+
         iconAnchor: [19, 38],
+
         popupAnchor: [0, -38]
 
     });
+
 
 
     /* =====================================================
@@ -588,6 +869,7 @@ L.control.layers(
     ];
 
 
+
     /* =====================================================
        CREAR MARCADORES
     ===================================================== */
@@ -597,11 +879,17 @@ L.control.layers(
 
     lugares.forEach((lugar) => {
 
+
         const marcador = L.marker(
+
             [lugar.lat, lugar.lng],
+
             {
+
                 icon: scoutIcon
+
             }
+
         );
 
 
@@ -610,19 +898,31 @@ L.control.layers(
             <div>
 
                 <div class="popup-title">
+
                     ${lugar.nombre}
+
                 </div>
+
 
                 <div class="popup-municipio">
+
                     ${lugar.municipio}
+
                 </div>
 
+
                 <a
+
                     href="https://www.google.com/maps/search/?api=1&query=${lugar.lat},${lugar.lng}"
+
                     target="_blank"
-                    class="popup-link">
+
+                    class="popup-link"
+
+                >
 
                     <i class="fas fa-location-arrow mr-1"></i>
+
                     Ver en Google Maps
 
                 </a>
@@ -634,159 +934,247 @@ L.control.layers(
 
         marcador.addTo(mapa);
 
+
         marcadores.push({
+
             marcador: marcador,
+
             datos: lugar
+
         });
 
     });
+
+
+
+    /* =====================================================
+       ELEMENTOS DEL BUSCADOR
+    ===================================================== */
+
+    const buscador =
+        document.getElementById('buscador');
+
+    const clearSearch =
+        document.getElementById('clear-search');
+
+    const mapInfo =
+        document.getElementById('map-info');
+
 
 
     /* =====================================================
        BUSCADOR
     ===================================================== */
 
-    const buscador = document.getElementById('buscador');
-    const clearSearch = document.getElementById('clear-search');
-    const mapInfo = document.getElementById('map-info');
+    buscador.addEventListener(
+
+        'input',
+
+        function() {
 
 
-    buscador.addEventListener('input', function() {
-
-        const texto = buscador.value
-            .toLowerCase()
-            .trim();
+            const texto = buscador.value
+                .toLowerCase()
+                .trim();
 
 
-        /* Mostrar u ocultar la X */
 
-        if (texto.length > 0) {
+            /* Mostrar / ocultar X */
 
-            clearSearch.style.display = 'flex';
+            if (texto.length > 0) {
 
-        } else {
-
-            clearSearch.style.display = 'none';
-
-        }
-
-
-        /* Si no hay búsqueda */
-
-        if (texto === '') {
-
-            mostrarTodos();
-
-            return;
-
-        }
-
-
-        /* Filtrar */
-
-        const encontrados = [];
-
-
-        marcadores.forEach((item) => {
-
-            const nombre =
-                item.datos.nombre.toLowerCase();
-
-            const municipio =
-                item.datos.municipio.toLowerCase();
-
-
-            if (
-                nombre.includes(texto) ||
-                municipio.includes(texto)
-            ) {
-
-                item.marcador.addTo(mapa);
-
-                encontrados.push(item);
+                clearSearch.style.display = 'flex';
 
             } else {
 
-                mapa.removeLayer(item.marcador);
+                clearSearch.style.display = 'none';
 
             }
 
-        });
 
 
-        /* Actualizar contador */
+            /* Si está vacío */
 
-        mapInfo.innerHTML = `
-            <i class="fas fa-map-marker-alt mr-1"></i>
-            ${encontrados.length} lugar${encontrados.length === 1 ? '' : 'es'}
-        `;
+            if (texto === '') {
+
+                mostrarTodos();
+
+                return;
+
+            }
 
 
-        /* Centrar resultados */
 
-        if (encontrados.length === 1) {
+            /* Buscar */
 
-            mapa.setView(
-                [
-                    encontrados[0].datos.lat,
-                    encontrados[0].datos.lng
-                ],
-                12
-            );
+            const encontrados = [];
 
-            encontrados[0].marcador.openPopup();
 
-        }
+            marcadores.forEach((item) => {
 
-        else if (encontrados.length > 1) {
 
-            const grupo = L.featureGroup(
-                encontrados.map(item => item.marcador)
-            );
+                const nombre =
+                    item.datos.nombre.toLowerCase();
 
-            mapa.fitBounds(
-                grupo.getBounds(),
-                {
-                    padding: [50, 50],
-                    maxZoom: 10
+
+                const municipio =
+                    item.datos.municipio.toLowerCase();
+
+
+
+                if (
+
+                    nombre.includes(texto) ||
+
+                    municipio.includes(texto)
+
+                ) {
+
+
+                    item.marcador.addTo(mapa);
+
+                    encontrados.push(item);
+
+
+                } else {
+
+
+                    mapa.removeLayer(
+                        item.marcador
+                    );
+
                 }
-            );
+
+            });
+
+
+
+            /* Contador */
+
+            mapInfo.innerHTML = `
+
+                <i class="fas fa-map-marker-alt mr-1"></i>
+
+                ${encontrados.length}
+
+                lugar${encontrados.length === 1 ? '' : 'es'}
+
+            `;
+
+
+
+            /* Centrar resultado único */
+
+            if (encontrados.length === 1) {
+
+
+                mapa.setView(
+
+                    [
+
+                        encontrados[0].datos.lat,
+
+                        encontrados[0].datos.lng
+
+                    ],
+
+                    12
+
+                );
+
+
+                encontrados[0]
+                    .marcador
+                    .openPopup();
+
+            }
+
+
+
+            /* Centrar múltiples resultados */
+
+            else if (encontrados.length > 1) {
+
+
+                const grupo =
+                    L.featureGroup(
+
+                        encontrados.map(
+
+                            item => item.marcador
+
+                        )
+
+                    );
+
+
+                mapa.fitBounds(
+
+                    grupo.getBounds(),
+
+                    {
+
+                        padding: [50, 50],
+
+                        maxZoom: 10
+
+                    }
+
+                );
+
+            }
 
         }
 
-    });
+    );
+
 
 
     /* =====================================================
        BOTÓN X
     ===================================================== */
 
-    clearSearch.addEventListener('click', function() {
+    clearSearch.addEventListener(
 
-        /* Limpiar buscador */
+        'click',
 
-        buscador.value = '';
+        function() {
 
-        /* Ocultar X */
 
-        clearSearch.style.display = 'none';
+            /* Limpiar */
 
-        /* Mostrar todos los lugares */
+            buscador.value = '';
 
-        mostrarTodos();
 
-        /* Regresar a vista general */
+            /* Ocultar X */
 
-        mapa.setView(
-            [21.05, -101.05],
-            8
-        );
+            clearSearch.style.display = 'none';
 
-        /* Quitar foco */
 
-        buscador.blur();
+            /* Mostrar todos */
 
-    });
+            mostrarTodos();
+
+
+            /* Regresar al Bajío */
+
+            mapa.setView(
+
+                [21.05, -101.05],
+
+                8
+
+            );
+
+
+            /* Quitar foco */
+
+            buscador.blur();
+
+        }
+
+    );
+
 
 
     /* =====================================================
@@ -794,6 +1182,7 @@ L.control.layers(
     ===================================================== */
 
     function mostrarTodos() {
+
 
         marcadores.forEach((item) => {
 
@@ -803,8 +1192,11 @@ L.control.layers(
 
 
         mapInfo.innerHTML = `
+
             <i class="fas fa-map-marker-alt mr-1"></i>
+
             ${lugares.length} lugares scout
+
         `;
 
     }
