@@ -1002,8 +1002,7 @@
         });
 
     });
-
-
+    
     /* =====================================================
        ELEMENTOS
     ===================================================== */
@@ -1016,6 +1015,89 @@
 
     const mapInfo =
         document.getElementById('map-info');
+
+
+    /* =====================================================
+       ABRIR LUGAR RECIBIDO DESDE LA PÁGINA PRINCIPAL
+       Ejemplo:
+       mapa.html?lugar=Cerro%20de%20Arandas
+    ===================================================== */
+
+    const parametros =
+        new URLSearchParams(window.location.search);
+
+    const lugarSolicitado =
+        parametros.get('lugar');
+
+
+    if (lugarSolicitado) {
+
+        const lugarBuscado =
+            decodeURIComponent(lugarSolicitado)
+                .trim()
+                .toLowerCase();
+
+
+        /* Buscar coincidencia */
+
+        const resultado =
+            marcadores.find(item => {
+
+                return item.datos.nombre
+                    .trim()
+                    .toLowerCase() === lugarBuscado;
+
+            });
+
+
+        /* Si encontramos el lugar */
+
+        if (resultado) {
+
+            const lat =
+                resultado.datos.lat;
+
+            const lng =
+                resultado.datos.lng;
+
+
+            /* Centrar mapa */
+
+            mapa.setView(
+
+                [lat, lng],
+
+                14,
+
+                {
+                    animate: true
+                }
+
+            );
+
+
+            /* Abrir marcador */
+
+            setTimeout(() => {
+
+                resultado.marcador.openPopup();
+
+            }, 500);
+
+
+            /* Actualizar información */
+
+            mapInfo.innerHTML = `
+
+                <i class="fas fa-map-marker-alt mr-1"></i>
+
+                ${resultado.datos.nombre}
+
+            `;
+
+        }
+
+    }
 
 
     /* =====================================================
@@ -1055,8 +1137,11 @@
                 mostrarTodos();
 
                 mapa.setView(
+
                     [21.05, -101.05],
+
                     8
+
                 );
 
                 return;
@@ -1073,11 +1158,13 @@
 
 
                 const nombre =
-                    item.datos.nombre.toLowerCase();
+                    item.datos.nombre
+                        .toLowerCase();
 
 
                 const municipio =
-                    item.datos.municipio.toLowerCase();
+                    item.datos.municipio
+                        .toLowerCase();
 
 
                 if (
@@ -1095,7 +1182,9 @@
                 } else {
 
                     mapa.removeLayer(
+
                         item.marcador
+
                     );
 
                 }
@@ -1116,7 +1205,9 @@
             `;
 
 
-            /* Un solo resultado */
+            /* =================================================
+               UN SOLO RESULTADO
+            ================================================= */
 
             if (encontrados.length === 1) {
 
@@ -1124,8 +1215,11 @@
                 mapa.setView(
 
                     [
+
                         encontrados[0].datos.lat,
+
                         encontrados[0].datos.lng
+
                     ],
 
                     12
@@ -1133,12 +1227,16 @@
                 );
 
 
-                encontrados[0].marcador.openPopup();
+                encontrados[0]
+                    .marcador
+                    .openPopup();
 
             }
 
 
-            /* Varios resultados */
+            /* =================================================
+               VARIOS RESULTADOS
+            ================================================= */
 
             else if (encontrados.length > 1) {
 
@@ -1147,7 +1245,10 @@
                     L.featureGroup(
 
                         encontrados.map(
-                            item => item.marcador
+
+                            item =>
+                                item.marcador
+
                         )
 
                     );
@@ -1185,7 +1286,7 @@
         function() {
 
 
-            /* Limpiar */
+            /* Limpiar búsqueda */
 
             buscador.value = '';
 
