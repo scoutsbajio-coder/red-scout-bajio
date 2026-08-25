@@ -68,115 +68,98 @@
            CONTROLES DEL MAPA
         ===================================================== */
 
-        /*
-         * Movemos TODO el grupo de controles
-         * a la esquina inferior derecha.
-         */
-
         .leaflet-bottom.leaflet-right {
-
             right: 12px !important;
             bottom: 70px !important;
-
         }
 
 
-       /* =====================================================
-   CONTROLES DE LEAFLET
-===================================================== */
+        /* =====================================================
+           CONTROLES DE LEAFLET
+        ===================================================== */
 
-/* Contenedor general de controles */
-.leaflet-top,
-.leaflet-bottom {
-    z-index: 900 !important;
-}
-
-
-/* =====================================================
-   COMPUTADORA
-   ===================================================== */
-
-/* Zoom arriba a la derecha */
-.leaflet-control-zoom {
-    margin-top: 10px !important;
-    margin-right: 10px !important;
-}
+        .leaflet-top,
+        .leaflet-bottom {
+            z-index: 900 !important;
+        }
 
 
-/* Capas arriba a la derecha */
-.leaflet-control-layers {
-    margin-top: 10px !important;
-    margin-right: 10px !important;
+        /* =====================================================
+           COMPUTADORA
+        ===================================================== */
 
-    border-radius: 10px !important;
-
-    box-shadow:
-        0 3px 12px rgba(0,0,0,.25) !important;
-}
+        .leaflet-control-zoom {
+            margin-top: 10px !important;
+            margin-right: 10px !important;
+        }
 
 
-/* =====================================================
-   CELULAR
-   ===================================================== */
+        .leaflet-control-layers {
+            margin-top: 10px !important;
+            margin-right: 10px !important;
 
-@media (max-width: 640px) {
+            border-radius: 10px !important;
 
-    /* -----------------------------
-       ZOOM
-    ----------------------------- */
-
-    .leaflet-control-zoom {
-
-        position: fixed !important;
-
-        right: 12px !important;
-        bottom: 78px !important;
-
-        left: auto !important;
-        top: auto !important;
-
-        margin: 0 !important;
-
-        z-index: 950 !important;
-    }
+            box-shadow:
+                0 3px 12px rgba(0,0,0,.25) !important;
+        }
 
 
-    .leaflet-control-zoom a {
+        /* =====================================================
+           CELULAR
+        ===================================================== */
 
-        width: 46px !important;
-        height: 46px !important;
+        @media (max-width: 640px) {
 
-        line-height: 46px !important;
+            .leaflet-control-zoom {
 
-        font-size: 24px !important;
-    }
+                position: fixed !important;
 
+                right: 12px !important;
+                bottom: 78px !important;
 
-    /* -----------------------------
-       CAPAS
-    ----------------------------- */
+                left: auto !important;
+                top: auto !important;
 
-    .leaflet-control-layers {
+                margin: 0 !important;
 
-        position: fixed !important;
-
-        right: 12px !important;
-        bottom: 178px !important;
-
-        left: auto !important;
-        top: auto !important;
-
-        margin: 0 !important;
-
-        z-index: 950 !important;
-
-        border-radius: 10px !important;
-
-        box-shadow:
-            0 3px 12px rgba(0,0,0,.25) !important;
-    }
-
+                z-index: 950 !important;
             }
+
+
+            .leaflet-control-zoom a {
+
+                width: 46px !important;
+                height: 46px !important;
+
+                line-height: 46px !important;
+
+                font-size: 24px !important;
+            }
+
+
+            .leaflet-control-layers {
+
+                position: fixed !important;
+
+                right: 12px !important;
+                bottom: 178px !important;
+
+                left: auto !important;
+                top: auto !important;
+
+                margin: 0 !important;
+
+                z-index: 950 !important;
+
+                border-radius: 10px !important;
+
+                box-shadow:
+                    0 3px 12px rgba(0,0,0,.25) !important;
+            }
+
+        }
+
 
         /* =====================================================
            MARCADORES
@@ -344,7 +327,7 @@
 
 
         /* =====================================================
-           BOTÓN X
+           BOTÓN X DEL BUSCADOR
         ===================================================== */
 
         #clear-search {
@@ -445,8 +428,6 @@
             }
 
 
-            /* Controles abajo a la derecha */
-
             .leaflet-bottom.leaflet-right {
 
                 right: 12px !important;
@@ -455,8 +436,6 @@
 
             }
 
-
-            /* Zoom más grande para celular */
 
             .leaflet-control-zoom a {
 
@@ -636,7 +615,13 @@
     );
 
 
-    /* SATÉLITE */
+    /* =====================================================
+       SATÉLITE
+       
+       IMPORTANTE:
+       maxZoom reducido a 17 para evitar llegar a niveles
+       donde las imágenes satelitales no están disponibles.
+    ===================================================== */
 
     const mapaSatelital = L.tileLayer(
 
@@ -647,7 +632,7 @@
             attribution:
                 'Sources: Esri, Maxar, Earthstar Geographics, and the GIS User Community',
 
-            maxZoom: 19
+            maxZoom: 17
 
         }
 
@@ -713,11 +698,16 @@
        VISTA GENERAL
     ===================================================== */
 
+    const CENTRO_GENERAL = [21.05, -101.05];
+
+    const ZOOM_GENERAL = 8;
+
+
     mapa.setView(
 
-        [21.05, -101.05],
+        CENTRO_GENERAL,
 
-        8
+        ZOOM_GENERAL
 
     );
 
@@ -804,7 +794,7 @@
             lng: -101.6340377
         },
 
-         {
+        {
             nombre: "Cerro de Arandas",
             municipio: "Irapuato",
             lat: 20.706167,
@@ -941,6 +931,13 @@
 
 
     /* =====================================================
+       VARIABLE PARA SABER SI EL POPUP VIENE DE UNA TARJETA
+    ===================================================== */
+
+    let popupDesdeTarjeta = false;
+
+
+    /* =====================================================
        CREAR MARCADORES
     ===================================================== */
 
@@ -990,6 +987,48 @@
         `);
 
 
+        /* =================================================
+           CUANDO SE CIERRA EL POPUP
+        ================================================= */
+
+        marcador.on('popupclose', function () {
+
+            /*
+             * Solo regresamos a la vista general si el
+             * usuario llegó aquí desde una tarjeta.
+             */
+
+            if (popupDesdeTarjeta) {
+
+                popupDesdeTarjeta = false;
+
+
+                mapa.setView(
+
+                    CENTRO_GENERAL,
+
+                    ZOOM_GENERAL,
+
+                    {
+                        animate: true
+                    }
+
+                );
+
+
+                mapInfo.innerHTML = `
+
+                    <i class="fas fa-map-marker-alt mr-1"></i>
+
+                    ${lugares.length} lugares scout
+
+                `;
+
+            }
+
+        });
+
+
         marcador.addTo(mapa);
 
 
@@ -1002,7 +1041,8 @@
         });
 
     });
-    
+
+
     /* =====================================================
        ELEMENTOS
     ===================================================== */
@@ -1019,7 +1059,9 @@
 
     /* =====================================================
        ABRIR LUGAR RECIBIDO DESDE LA PÁGINA PRINCIPAL
+
        Ejemplo:
+
        mapa.html?lugar=Cerro%20de%20Arandas
     ===================================================== */
 
@@ -1031,6 +1073,14 @@
 
 
     if (lugarSolicitado) {
+
+        /*
+         * Indicamos que el popup fue abierto desde
+         * una tarjeta.
+         */
+
+        popupDesdeTarjeta = true;
+
 
         const lugarBuscado =
             decodeURIComponent(lugarSolicitado)
@@ -1138,9 +1188,9 @@
 
                 mapa.setView(
 
-                    [21.05, -101.05],
+                    CENTRO_GENERAL,
 
-                    8
+                    ZOOM_GENERAL
 
                 );
 
@@ -1276,7 +1326,7 @@
 
 
     /* =====================================================
-       BOTÓN X
+       BOTÓN X DEL BUSCADOR
     ===================================================== */
 
     clearSearch.addEventListener(
@@ -1305,9 +1355,9 @@
 
             mapa.setView(
 
-                [21.05, -101.05],
+                CENTRO_GENERAL,
 
-                8
+                ZOOM_GENERAL
 
             );
 
