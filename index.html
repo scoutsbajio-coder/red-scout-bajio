@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Scout Bajío | Jonathan Alexander</title>
+    <meta name="description" content="Zonas de camping y hiking verificadas en el Bajío, mapa scout y biblioteca de recursos creada por y para la comunidad scout.">
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#1B4332">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Red Scout">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+    <!-- Íconos -->
+    <link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+    <!-- Vista previa al compartir el enlace -->
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_MX">
+    <meta property="og:title" content="Red Scout Bajío">
+    <meta property="og:description" content="Zonas de camping y hiking, mapa scout y biblioteca de recursos para la comunidad scout del Bajío.">
+    <meta property="og:url" content="https://scoutsbajio-coder.github.io/red-scout-bajio/">
+    <meta property="og:image" content="https://scoutsbajio-coder.github.io/red-scout-bajio/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <meta name="google-site-verification" content="WP-l9l-iO3G5bsklZKS8cclCP14BFGc9dz0gziGy2pI">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .scout-green { background-color: #1B4332; }
+        .scout-blue  { background-color: #1D4ED8; }
+        .whatsapp-green { background: #25D366; }
+        body { background: #F5F5F0; }
+
+        .card-hover { transition: .35s; }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 18px 35px rgba(0,0,0,.15);
+        }
+
+        /* Animaciones del banner */
+        @keyframes fadeZoom {
+            from { opacity: 0; transform: scale(1.08); }
+            to   { opacity: 1; transform: scale(1.05); }
+        }
+        .banner-img { animation: fadeZoom 1.5s ease-out forwards; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(25px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .banner-text { animation: fadeUp 1.2s ease-out .4s forwards; opacity: 0; }
+
+        /* Respeta a quien desactiva las animaciones en su dispositivo */
+        @media (prefers-reduced-motion: reduce) {
+            .banner-img, .banner-text { animation: none; opacity: 1; }
+            .banner-img { transform: none; }
+            .card-hover { transition: none; }
+            .card-hover:hover { transform: none; }
+        }
+
+        /* En pantallas táctiles el "hover" se queda pegado: lo quitamos */
+        @media (hover: none) {
+            .card-hover:hover { transform: none; box-shadow: none; }
+        }
+
+        /* Margen para el notch y la barra de gestos en celulares */
+        nav { padding-top: max(1rem, env(safe-area-inset-top)); }
+        footer { padding-bottom: max(2.5rem, env(safe-area-inset-bottom)); }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+
+    <nav class="scout-green text-white p-4 shadow-lg sticky top-0 z-50 border-b-4 border-yellow-500">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold flex items-center gap-2">
+                <img src="favicon-64.png" alt="Logo Red Scout Bajío" width="36" height="36" class="w-9 h-9 object-contain rounded-full bg-white p-0.5">
+                Red Scout Bajío
+            </h1>
+
+            <!-- Menú de escritorio -->
+            <div class="hidden md:flex items-center space-x-6 text-sm font-semibold uppercase tracking-wider">
+                <a href="#lugares" class="hover:text-yellow-400">Zonas de Camping y Hiking</a>
+                <a href="#biblioteca" class="hover:text-yellow-400">Biblioteca</a>
+                <a href="mapa.html" class="hover:text-yellow-400">Mapa Scout</a>
+                <button type="button" class="btn-instalar hover:text-yellow-400 uppercase" style="display:none">
+                    <i class="fas fa-download mr-1"></i> Instalar app
+                </button>
+                <a href="#contacto" class="bg-yellow-500 text-green-900 px-4 py-1 rounded-full hover:bg-yellow-400 transition">Colaborar</a>
+            </div>
+
+            <!-- Botón hamburguesa (solo celular) -->
+            <button id="menu-btn" type="button" class="md:hidden text-white text-2xl focus:outline-none"
+                    aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Menú desplegable móvil -->
+        <div id="mobile-menu" class="hidden md:hidden scout-green w-full border-t border-green-800 p-4 flex flex-col items-center space-y-4 uppercase text-sm font-semibold">
+            <a href="#lugares" class="hover:text-yellow-400">Zonas de Camping y Hiking</a>
+            <a href="#biblioteca" class="hover:text-yellow-400">Biblioteca</a>
+            <a href="mapa.html" class="hover:text-yellow-400">Mapa Scout</a>
+            <button type="button" class="btn-instalar hover:text-yellow-400 uppercase" style="display:none">
+                <i class="fas fa-download mr-1"></i> Instalar app
+            </button>
+            <a href="#contacto" class="bg-yellow-500 text-green-900 px-6 py-2 rounded-full hover:bg-yellow-400 transition">Colaborar</a>
+        </div>
+    </nav>
+
+    <header class="relative h-[380px] md:h-[450px] border-b overflow-hidden">
+        <!-- Imagen para computadora -->
+        <img src="banner_optimizado.webp" alt="" width="1939" height="811"
+             class="banner-img absolute inset-0 w-full h-full object-cover scale-105 hidden md:block">
+        <!-- Imagen para celular -->
+        <img src="banner_movil.webp" alt="" width="1536" height="1536"
+             class="banner-img absolute inset-0 w-full h-full object-cover block md:hidden">
+
+        <div class="absolute inset-0 bg-black/50"></div>
+
+        <div class="banner-text relative z-10 container mx-auto h-full flex flex-col justify-center items-center text-center px-4">
+            <h2 class="text-4xl md:text-6xl font-black uppercase italic text-white mb-4 drop-shadow-lg">
+                Zonas de Camping y Hiking
+            </h2>
+            <p class="text-lg md:text-xl text-white max-w-2xl mx-auto drop-shadow-md">
+                Explora los mejores lugares para camping, rutas de hiking y una biblioteca de recursos creada por y para la comunidad scout.
+            </p>
+        </div>
+    </header>
+
+    <section id="lugares" class="container mx-auto py-12 px-4">
+        <div class="flex items-center justify-between mb-10">
+            <h3 class="text-2xl font-bold text-gray-800 border-l-8 border-yellow-500 pl-4">📍 Explorar Destinos</h3>
+            <span id="contador" class="text-sm font-semibold text-gray-500" aria-live="polite"></span>
+        </div>
+
+        <!-- Barra de búsqueda -->
+        <div class="mb-8 max-w-md">
+            <div class="relative">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
+                    <i class="fas fa-search"></i>
+                </span>
+                <label for="buscador" class="sr-only">Buscar lugar</label>
+                <input type="search" id="buscador" autocomplete="off"
+                       placeholder="Buscar por nombre, municipio o actividad..."
+                       class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent shadow-sm text-sm transition">
+            </div>
+        </div>
+
+        <!-- Las tarjetas se generan desde lugares.json (index.js) -->
+        <div id="grid-lugares" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <p class="text-gray-500 col-span-full">Cargando lugares…</p>
+        </div>
+
+        <p id="sin-resultados" class="hidden text-center text-gray-500 py-10">
+            No encontramos lugares con esa búsqueda. Prueba con otro nombre, municipio o actividad.
+        </p>
+    </section>
+
+    <section id="biblioteca" class="bg-slate-900 py-16 text-white">
+        <div class="container mx-auto px-4">
+            <h3 class="text-2xl font-bold mb-10 border-l-8 border-blue-500 pl-4 uppercase tracking-widest">Biblioteca de Recursos</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <a href="https://drive.google.com/drive/folders/1QgYGAiWkpjvBsah6pnSr-0KX6hDaFRTJ" target="_blank" rel="noopener" class="bg-slate-800 p-6 rounded-2xl border border-slate-700 flex items-start gap-4 hover:bg-slate-700 transition">
+                    <i class="fas fa-book text-blue-400 text-3xl"></i>
+                    <div>
+                        <h5 class="font-bold">Manuales de Nudos</h5>
+                        <p class="text-xs text-slate-400 mt-1">Guías descargables en PDF</p>
+                    </div>
+                </a>
+
+                <a href="https://drive.google.com/drive/folders/1LA5rhzvKXHwyckqakuojT4gVe-qTceNx?usp=sharing" target="_blank" rel="noopener" class="bg-slate-800 p-6 rounded-2xl border border-slate-700 flex items-start gap-4 hover:bg-slate-700 transition">
+                    <i class="fas fa-utensils text-green-400 text-3xl"></i>
+                    <div>
+                        <h5 class="font-bold">Recetario de Patrulla</h5>
+                        <p class="text-xs text-slate-400 mt-1">Cocina sin utensilios</p>
+                    </div>
+                </a>
+
+                <a href="https://drive.google.com/drive/folders/1GT6PBA3k0CyMMBERJi2zUTF5pcv9Yfw9?usp=sharing" target="_blank" rel="noopener" class="bg-slate-800 p-6 rounded-2xl border border-slate-700 flex items-start gap-4 hover:bg-slate-700 transition">
+                    <i class="fas fa-shield-alt text-red-400 text-3xl"></i>
+                    <div>
+                        <h5 class="font-bold">Seguridad Scout</h5>
+                        <p class="text-xs text-slate-400 mt-1">Protocolos de emergencia</p>
+                    </div>
+                </a>
+
+                <a href="https://drive.google.com/drive/folders/1n0DDVah8YlhRtla0p6cXLZKl1Nved_sz?usp=sharing" target="_blank" rel="noopener" class="bg-slate-800 p-6 rounded-2xl border border-slate-700 flex items-start gap-4 hover:bg-slate-700 transition">
+                    <i class="fas fa-compass text-yellow-400 text-3xl"></i>
+                    <div>
+                        <h5 class="font-bold">Manuales de Técnica Scout</h5>
+                        <p class="text-xs text-slate-400 mt-1">Orientación, pionerismo y más</p>
+                    </div>
+                </a>
+
+                <a href="https://drive.google.com/drive/folders/1R0GXPNdjvCgmz8FPf8vYXYAKA-T2VpC5" target="_blank" rel="noopener" class="bg-slate-800 p-6 rounded-2xl border border-slate-700 flex items-start gap-4 hover:bg-slate-700 transition">
+                    <i class="fas fa-flag text-yellow-400 text-3xl"></i>
+                    <div>
+                        <h5 class="font-bold">Actividades Scout</h5>
+                        <p class="text-xs text-slate-400 mt-1">Dinámicas, grandes juegos y rallys</p>
+                    </div>
+                </a>
+
+                <a href="https://drive.google.com/drive/folders/1Oyb-WQnaNyPFaZERi4xU_eeNmbqXE6rp?usp=sharing" target="_blank" rel="noopener" class="bg-slate-800 p-6 rounded-2xl border border-slate-700 flex items-start gap-4 hover:bg-slate-700 transition">
+                    <i class="fas fa-fleur-de-lis text-purple-400 text-3xl"></i>
+                    <div>
+                        <h5 class="font-bold">Ceremonias y Mística</h5>
+                        <p class="text-xs text-slate-400 mt-1">Tradiciones y espiritualidad</p>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto" class="bg-white py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6">¿Conoces un lugar increíble?</h3>
+            <p class="text-gray-600 mb-8 max-w-xl mx-auto">Ayúdanos a crecer nuestra base de datos. Mándanos la ubicación y detalles para agregarlos a la red.</p>
+
+            <div class="flex flex-col md:flex-row justify-center items-center gap-6">
+                <a href="https://wa.me/524621419906?text=Hola,%20quisiera%20sugerir%20un%20nuevo%20lugar%20para%20la%20Red%20Scout%20Baj%C3%ADo" target="_blank" rel="noopener" class="whatsapp-green text-white px-8 py-4 rounded-full font-bold flex items-center gap-3 shadow-lg hover:scale-105 transition transform">
+                    <i class="fab fa-whatsapp text-2xl"></i> Mandar nuevo lugar
+                </a>
+
+                <a href="mailto:scoutsbajio@gmail.com" class="flex items-center gap-3 text-gray-700 font-medium hover:text-blue-700">
+                    <i class="fas fa-envelope text-blue-500 text-xl"></i>
+                    <span>scoutsbajio@gmail.com</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-50 py-10 text-center border-t">
+        <p class="text-gray-500 text-xs font-bold uppercase tracking-widest">Clan Centzon Huitznahuac | Jonathan Alexander</p>
+    </footer>
+
+    <script src="pwa.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>
